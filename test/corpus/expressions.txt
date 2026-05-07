@@ -66,37 +66,34 @@ a[[1, 2]]
       (integer)
       (integer))))
 
-; ================
-; Span - both bounds
-; ================
-;
-; a[[1;;4]]
-;
-; ---
-;
-; (source_file
-;   (part
-;     head: (symbol)
-;     arguments: (span
-;       (integer)
-;       (integer))))
-;
-; ================
-; Span - start only
-; ================
-;
-; a[[1;;]]
-;
-; ---
-;
-; (source_file
-;   (part
-;     head: (symbol)
-;     arguments: (span
-;       (integer))))
-;
-; KNOWN ISSUE: implicit_times + GLR causes standalone ;; (high prec) to be
-; consumed as implicit_times LHS before binary span can match.
+================
+Span - both bounds
+================
+
+a[[1;;4]]
+
+---
+
+(source_file
+  (part
+    head: (symbol)
+    arguments: (span
+      (integer)
+      (integer))))
+
+================
+Span - start only
+================
+
+a[[1;;]]
+
+---
+
+(source_file
+  (part
+    head: (symbol)
+    arguments: (span
+      (integer))))
 
 ================
 Span - end only
