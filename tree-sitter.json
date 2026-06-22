@@ -19,7 +19,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/batracos/zed-wolfram-treesitter"
+      "repository": "https://github.com/WolframResearch/tree-sitter-wolfram"
     }
   }
 }
