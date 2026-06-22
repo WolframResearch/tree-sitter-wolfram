@@ -2773,7 +2773,7 @@
       "members": [
         {
           "type": "PREC_RIGHT",
-          "value": 123,
+          "value": 80,
           "content": {
             "type": "SEQ",
             "members": [
@@ -2794,7 +2794,7 @@
         },
         {
           "type": "PREC_RIGHT",
-          "value": 123,
+          "value": 80,
           "content": {
             "type": "SEQ",
             "members": [
@@ -2811,7 +2811,7 @@
         },
         {
           "type": "PREC_RIGHT",
-          "value": 177,
+          "value": 80,
           "content": {
             "type": "SEQ",
             "members": [
@@ -2828,7 +2828,7 @@
         },
         {
           "type": "PREC_RIGHT",
-          "value": 177,
+          "value": 80,
           "content": {
             "type": "STRING",
             "value": ";;"
@@ -3020,11 +3020,6 @@
     ],
     [
       "implicit_times",
-      "binary",
-      "span"
-    ],
-    [
-      "implicit_times",
       "infix",
       "call"
     ],
@@ -3035,11 +3030,6 @@
     ],
     [
       "implicit_times",
-      "infix",
-      "span"
-    ],
-    [
-      "implicit_times",
       "call",
       "tilde"
     ],
@@ -3047,6 +3037,9 @@
       "implicit_times",
       "postfix",
       "tilde"
+    ],
+    [
+      "span"
     ]
   ],
   "precedences": [],

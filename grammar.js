@@ -191,12 +191,11 @@
       [$.implicit_times, $.prefix, $.postfix, $.infix],
       [$.implicit_times, $.binary, $.call],
       [$.implicit_times, $.postfix, $.binary],
-      [$.implicit_times, $.binary, $.span],
       [$.implicit_times, $.infix, $.call],
       [$.implicit_times, $.postfix, $.infix],
-      [$.implicit_times, $.infix, $.span],
       [$.implicit_times, $.call, $.tilde],
       [$.implicit_times, $.postfix, $.tilde],
+      [$.span],
     ],
 
     rules: {
@@ -574,19 +573,19 @@
       span: ($) =>
         choice(
           prec.right(
-            PRECEDENCE_PREFIX_MINUS - 1,
+            PRECEDENCE_SEMISEMI,
             seq($._expression, ";;", $._expression),
           ),
           prec.right(
-            PRECEDENCE_PREFIX_MINUS - 1,
+            PRECEDENCE_SEMISEMI,
             seq($._expression, ";;"),
           ),
           prec.right(
-            PRECEDENCE_CALL + 1,
+            PRECEDENCE_SEMISEMI,
             seq(";;", $._expression),
           ),
           prec.right(
-            PRECEDENCE_CALL + 1,
+            PRECEDENCE_SEMISEMI,
             ";;",
           ),
         ),
