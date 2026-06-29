@@ -123,6 +123,65 @@ a[[;;]]
     arguments: (span)))
 
 ================
+Span - infix left bound (plus)
+================
+
+a+b;;c
+
+---
+
+(source_file
+  (span
+    (infix
+      (symbol)
+      (symbol))
+    (symbol)))
+
+================
+Span - infix left bound (minus)
+================
+
+a-b;;c
+
+---
+
+(source_file
+  (span
+    (infix
+      (symbol)
+      (symbol))
+    (symbol)))
+
+================
+Span - implicit times left bound
+================
+
+a b;;c
+
+---
+
+(source_file
+  (span
+    (implicit_times
+      (symbol)
+      (symbol))
+    (symbol)))
+
+================
+Span - prefix left bound
+================
+
++b;;c
+
+---
+
+(source_file
+  (span
+    (prefix
+      (symbol))
+    (symbol)))
+
+================
 Nested function call
 ================
 

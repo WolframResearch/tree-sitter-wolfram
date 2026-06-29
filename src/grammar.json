@@ -87,6 +87,27 @@
         }
       ]
     },
+    "_implicit_times_rhs": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_leaf"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "group"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "freeform_evaluate"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "pattern"
+        }
+      ]
+    },
     "_leaf": {
       "type": "CHOICE",
       "members": [
@@ -496,7 +517,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "_non_prefix_expression"
+              "name": "_implicit_times_rhs"
             }
           ]
         }
@@ -2993,53 +3014,18 @@
     ],
     [
       "implicit_times",
-      "prefix",
-      "postfix"
-    ],
-    [
-      "implicit_times",
-      "prefix",
-      "infix",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "prefix",
-      "postfix",
-      "infix"
-    ],
-    [
-      "implicit_times",
       "binary",
       "call"
     ],
     [
       "implicit_times",
-      "postfix",
-      "binary"
-    ],
-    [
-      "implicit_times",
       "infix",
       "call"
     ],
     [
       "implicit_times",
-      "postfix",
-      "infix"
-    ],
-    [
-      "implicit_times",
       "call",
       "tilde"
-    ],
-    [
-      "implicit_times",
-      "postfix",
-      "tilde"
-    ],
-    [
-      "span"
     ]
   ],
   "precedences": [],

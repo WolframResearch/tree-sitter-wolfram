@@ -186,16 +186,9 @@
     // combinations. Only the conflict sets tree-sitter actually needs are listed.
     conflicts: ($) => [
       [$.implicit_times, $.prefix, $.call],
-      [$.implicit_times, $.prefix, $.postfix],
-      [$.implicit_times, $.prefix, $.infix, $.call],
-      [$.implicit_times, $.prefix, $.postfix, $.infix],
       [$.implicit_times, $.binary, $.call],
-      [$.implicit_times, $.postfix, $.binary],
       [$.implicit_times, $.infix, $.call],
-      [$.implicit_times, $.postfix, $.infix],
       [$.implicit_times, $.call, $.tilde],
-      [$.implicit_times, $.postfix, $.tilde],
-      [$.span],
     ],
 
     rules: {
@@ -228,6 +221,13 @@
           $.message_name,
           $.tilde,
         ),
+
+      // RHS of implicit_times: only non-prefix-leading atoms. Operators bind
+      // implicit_times as their LEFT operand (e.g. 2x^2 = (2x)^2), so the RHS is
+      // always an atom in practice. Crucially this keeps a leading prefix +/-
+      // out of every left-corner reachable after a complete expression, so
+      // `a+b;;c` parses as span(a+b, c) instead of a*(+b;;c).
+      _implicit_times_rhs: ($) => choice($._leaf, $.group, $.freeform_evaluate, $.pattern),
 
       _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
 
@@ -298,7 +298,7 @@
       // Dynamic precedence -1 ensures explicit operators (infix +, -, etc.) win
       // over "implicit_times with prefix operator" when both parses are valid.
       implicit_times: ($) =>
-        prec.dynamic(-1, prec.left(PRECEDENCE_FAKE_IMPLICITTIMES, seq($._expression, $._non_prefix_expression))),
+        prec.dynamic(-1, prec.left(PRECEDENCE_FAKE_IMPLICITTIMES, seq($._expression, $._implicit_times_rhs))),
 
       // "Type"::["arg1", "arg2"] is TypeSpecifier["Type", "arg1", "arg2"]
       type_specifier: ($) =>
