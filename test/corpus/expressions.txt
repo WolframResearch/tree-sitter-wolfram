@@ -404,6 +404,32 @@ x; y
     (symbol)))
 
 ================
+Compound expression - trailing semicolon
+================
+
+x;
+
+---
+
+(source_file
+  (infix
+    (symbol)))
+
+================
+Compound expression - trailing semicolon with rhs
+================
+
+x; y;
+
+---
+
+(source_file
+  (infix
+    (infix
+      (symbol)
+      (symbol))))
+
+================
 Unset
 ================
 
@@ -694,3 +720,139 @@ Implicit times - groups
       (infix
         (symbol)
         (integer)))))
+
+================
+Newline separates top-level statements
+================
+
+f[]
+
+g[]
+
+---
+
+(source_file
+  (call
+    head: (symbol))
+  (call
+    head: (symbol)))
+
+================
+Newline separates - three statements
+================
+
+a
+b
+c
+
+---
+
+(source_file
+  (symbol)
+  (symbol)
+  (symbol))
+
+================
+Newline separates - assignment then value
+================
+
+r = 2
+3
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (integer))
+  (integer))
+
+================
+Newline does not separate inside group
+================
+
+(a
+b)
+
+---
+
+(source_file
+  (group
+    (implicit_times
+      (symbol)
+      (symbol))))
+
+================
+Newline does not separate inside call arguments
+================
+
+f[a
+b]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (implicit_times
+      (symbol)
+      (symbol))))
+
+================
+Trailing infix operator continues across newline
+================
+
+a +
+b
+
+---
+
+(source_file
+  (infix
+    (symbol)
+    (symbol)))
+
+================
+Leading prefix operator on new line is a new statement
+================
+
+a
++b
+
+---
+
+(source_file
+  (symbol)
+  (prefix
+    (symbol)))
+
+================
+Newline after semicolon separates statements
+================
+
+a;
+b
+
+---
+
+(source_file
+  (infix
+    (symbol))
+  (symbol))
+
+================
+Newline after semicolon - multiple statements
+================
+
+a;
+b;
+c
+
+---
+
+(source_file
+  (infix
+    (symbol))
+  (infix
+    (symbol))
+  (symbol))

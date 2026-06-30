@@ -180,7 +180,7 @@
 
     extras: ($) => [$.comment, /\s/],
 
-    externals: ($) => [$.comment],
+    externals: ($) => [$.comment, $._statement_sep],
 
     // implicit_times (expr expr) creates GLR ambiguity with certain operator
     // combinations. Only the conflict sets tree-sitter actually needs are listed.
@@ -192,7 +192,20 @@
     ],
 
     rules: {
-      source_file: ($) => repeat($._expression),
+      // Top-level expressions are separated by statement separators (significant
+      // newlines emitted by the external scanner). A statement separator is only
+      // valid here, never inside brackets, so newlines inside groups stay
+      // insignificant and still form implicit_times. Same-line juxtaposition
+      // ("f[] g[]") has no separator and so remains a single implicit_times.
+      source_file: ($) =>
+        seq(
+          repeat($._statement_sep),
+          optional(seq(
+            $._expression,
+            repeat(seq(repeat1($._statement_sep), $._expression)),
+            repeat($._statement_sep),
+          )),
+        ),
 
       _expression: ($) =>
         choice(
@@ -469,6 +482,13 @@
         choice(
           prec.left(PRECEDENCE_COMMA, seq($._expression, ",", $._expression)),
           prec.left(PRECEDENCE_SEMI, seq($._expression, ";", $._expression)),
+          // Trailing semicolon: CompoundExpression[expr, Null]. Makes "a;" a
+          // complete statement so a following newline separates it (a;\nb).
+          // Lower precedence than the binary ";" above so that when a real
+          // expression follows on the same line the parser shifts it as the RHS
+          // ("a; b" stays one CompoundExpression) and only reduces to the
+          // trailing form when nothing can follow (newline or EOF).
+          prec.left(PRECEDENCE_SEMI - 1, seq($._expression, ";")),
           prec.left(
             PRECEDENCE_TILDETILDE,
             seq($._expression, "~~", $._expression),

@@ -3,11 +3,59 @@
   "name": "wolfram",
   "rules": {
     "source_file": {
-      "type": "REPEAT",
-      "content": {
-        "type": "SYMBOL",
-        "name": "_expression"
-      }
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_statement_sep"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_expression"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "REPEAT1",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_statement_sep"
+                        }
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "_expression"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_statement_sep"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
     },
     "_expression": {
       "type": "CHOICE",
@@ -1972,6 +2020,23 @@
         },
         {
           "type": "PREC_LEFT",
+          "value": 3,
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_expression"
+              },
+              {
+                "type": "STRING",
+                "value": ";"
+              }
+            ]
+          }
+        },
+        {
+          "type": "PREC_LEFT",
           "value": 36,
           "content": {
             "type": "SEQ",
@@ -3033,6 +3098,10 @@
     {
       "type": "SYMBOL",
       "name": "comment"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_statement_sep"
     }
   ],
   "inline": [],
