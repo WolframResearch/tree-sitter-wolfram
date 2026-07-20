@@ -189,6 +189,9 @@
       [$.implicit_times, $.binary, $.call],
       [$.implicit_times, $.infix, $.call],
       [$.implicit_times, $.call, $.tilde],
+      [$.implicit_times, $._mul_binary, $.call],
+      [$.implicit_times, $._mul_infix, $.call],
+      [$.implicit_times, $._mul_tilde, $.call],
     ],
 
     rules: {
@@ -235,12 +238,133 @@
           $.tilde,
         ),
 
-      // RHS of implicit_times: only non-prefix-leading atoms. Operators bind
-      // implicit_times as their LEFT operand (e.g. 2x^2 = (2x)^2), so the RHS is
-      // always an atom in practice. Crucially this keeps a leading prefix +/-
-      // out of every left-corner reachable after a complete expression, so
-      // `a+b;;c` parses as span(a+b, c) instead of a*(+b;;c).
-      _implicit_times_rhs: ($) => choice($._leaf, $.group, $.freeform_evaluate, $.pattern),
+      // RHS operand of implicit_times ("tight operand"). Implicit Times binds at
+      // PRECEDENCE_FAKE_IMPLICITTIMES (108); operators that bind *tighter* than
+      // that must group with the right operand, not the whole product, so that
+      // e.g. `2x^2` = 2*(x^2) and `2 a[b]` = 2*a[b] rather than (2x)^2 / (2a)[b].
+      //
+      // Two requirements drive the shape of this rule:
+      //  1. The leading token must NOT be a prefix operator. A prefix +/- has
+      //     higher precedence (124) than infix +/- (86) and span (80), so if it
+      //     could start the RHS it would win the reduce and wrongly turn
+      //     `a+b;;c` into a*(+b;;c) instead of span(a+b, c).
+      //  2. The LEFT/head operand of every operator reachable here must again be
+      //     a _mul_operand (never a full _expression), otherwise the product's
+      //     own LHS could be swallowed (e.g. `2 a[b]` making `2 a` the call head).
+      // Right-hand / bracketed sub-expressions stay full _expression.
+      //
+      // Because prefix is excluded and heads are restricted, the choice between
+      // "reduce implicit_times" and "shift a tighter operator" resolves by static
+      // precedence (108 vs the operator's precedence), so no GLR conflict is
+      // needed for these forms.
+      _mul_operand: ($) =>
+        choice(
+          $._leaf,
+          $.group,
+          $.pattern,
+          $.freeform_evaluate,
+          alias($._mul_binary, $.binary),
+          alias($._mul_infix, $.infix),
+          alias($._mul_postfix, $.postfix),
+          alias($._mul_tilde, $.tilde),
+          alias($._mul_call, $.call),
+          alias($._mul_part, $.part),
+          alias($._mul_message_name, $.message_name),
+          alias($._mul_type_specifier, $.type_specifier),
+        ),
+
+      // Tight binary operators (precedence > implicit Times). Left operand is a
+      // _mul_operand; right operand is a full _expression. These mirror the
+      // corresponding entries in `binary`; keep the two in sync if either the
+      // precedence or associativity of an operator changes.
+      _mul_binary: ($) =>
+        choice(
+          prec.left(PRECEDENCE_SLASH, seq($._mul_operand, "/", $._expression)),
+          prec.right(PRECEDENCE_CARET, seq($._mul_operand, "^", $._expression)),
+          prec.left(PRECEDENCE_SLASHAT, seq($._mul_operand, "/@", $._expression)),
+          prec.right(PRECEDENCE_ATAT, seq($._mul_operand, "@@", $._expression)),
+          prec.left(PRECEDENCE_SLASHSLASHAT, seq($._mul_operand, "//@", $._expression)),
+          prec.left(PRECEDENCE_ATATAT, seq($._mul_operand, "@@@", $._expression)),
+          prec.right(PRECEDENCE_AT, seq($._mul_operand, "@", $._expression)),
+          prec.left(PRECEDENCE_INFIX_QUESTION, seq($._mul_operand, "?", $._expression)),
+        ),
+
+      // Tight infix operators (precedence > implicit Times). Mirror of the
+      // matching entries in `infix`; these produce `infix` nodes, not `binary`,
+      // so the tree shape is the same as outside a product (`x . y` vs `2 x . y`).
+      _mul_infix: ($) =>
+        choice(
+          prec.left(PRECEDENCE_DOT, seq($._mul_operand, ".", $._expression)),
+          prec.left(PRECEDENCE_STARSTAR, seq($._mul_operand, "**", $._expression)),
+          prec.left(PRECEDENCE_LESSGREATER, seq($._mul_operand, "<>", $._expression)),
+          prec.left(PRECEDENCE_SLASHSTAR, seq($._mul_operand, "/*", $._expression)),
+          prec.left(PRECEDENCE_ATSTAR, seq($._mul_operand, "@*", $._expression)),
+          prec.left(PRECEDENCE_LONGNAME_DIVIDE, seq($._mul_operand, "\\[Divide]", $._expression)),
+          prec.left(PRECEDENCE_LONGNAME_DIVIDES, seq($._mul_operand, "\\[Divides]", $._expression)),
+          prec.left(PRECEDENCE_LONGNAME_DIVISIONSLASH, seq($._mul_operand, "\\[DivisionSlash]", $._expression)),
+        ),
+
+      // Tight ternary tilde `a~f~b` = f[a, b] (precedence > implicit Times).
+      // Only the left operand is narrowed; function and right operand are full.
+      _mul_tilde: ($) =>
+        prec.left(PRECEDENCE_TILDE, seq(
+          $._mul_operand,
+          "~",
+          field("function", $._expression),
+          "~",
+          $._expression,
+        )),
+
+      // Tight postfix operators (precedence > implicit Times). Excludes low ones
+      // (& .. ... =.).
+      _mul_postfix: ($) =>
+        choice(
+          prec(PRECEDENCE_SINGLEQUOTE, seq($._mul_operand, "'")),
+          prec(PRECEDENCE_POSTFIX_BANG, seq($._mul_operand, "!")),
+          prec(PRECEDENCE_POSTFIX_BANGBANG, seq($._mul_operand, "!!")),
+          prec(PRECEDENCE_POSTFIX_MINUSMINUS, seq($._mul_operand, "--")),
+          prec(PRECEDENCE_POSTFIX_PLUSPLUS, seq($._mul_operand, "++")),
+          prec(PRECEDENCE_LONGNAME_TRANSPOSE, seq($._mul_operand, "\\[Transpose]")),
+          prec(PRECEDENCE_LONGNAME_CONJUGATE, seq($._mul_operand, "\\[Conjugate]")),
+          prec(PRECEDENCE_LONGNAME_CONJUGATETRANSPOSE, seq($._mul_operand, "\\[ConjugateTranspose]")),
+          prec(PRECEDENCE_LONGNAME_HERMITIANCONJUGATE, seq($._mul_operand, "\\[HermitianConjugate]")),
+        ),
+
+      _mul_call: ($) =>
+        prec(PRECEDENCE_CALL, seq(
+          field("head", $._mul_operand),
+          "[",
+          optional(field("arguments", $._expression)),
+          "]",
+        )),
+
+      _mul_part: ($) =>
+        prec(PRECEDENCE_CALL, seq(
+          field("head", $._mul_operand),
+          "[[",
+          optional(field("arguments", $._expression)),
+          "]]",
+        )),
+
+      _mul_message_name: ($) =>
+        prec.left(PRECEDENCE_COLONCOLON, seq(
+          $._mul_operand,
+          "::",
+          alias(token.immediate(SYMBOL_NAME), $.message_tag),
+          optional(seq(
+            token.immediate("::"),
+            alias(token.immediate(SYMBOL_NAME), $.message_tag),
+          )),
+        )),
+
+      _mul_type_specifier: ($) =>
+        prec.left(PRECEDENCE_COLONCOLON, seq(
+          $._mul_operand,
+          "::",
+          "[",
+          optional(field("arguments", $._expression)),
+          "]",
+        )),
 
       _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
 
@@ -311,7 +435,7 @@
       // Dynamic precedence -1 ensures explicit operators (infix +, -, etc.) win
       // over "implicit_times with prefix operator" when both parses are valid.
       implicit_times: ($) =>
-        prec.dynamic(-1, prec.left(PRECEDENCE_FAKE_IMPLICITTIMES, seq($._expression, $._implicit_times_rhs))),
+        prec.dynamic(-1, prec.left(PRECEDENCE_FAKE_IMPLICITTIMES, seq($._expression, $._mul_operand))),
 
       // "Type"::["arg1", "arg2"] is TypeSpecifier["Type", "arg1", "arg2"]
       type_specifier: ($) =>
@@ -354,6 +478,8 @@
           prec(PRECEDENCE_LESSLESS, seq("<<", $._expression)),
         ),
 
+      // NOTE: entries here with precedence > implicit Times (108) are mirrored in
+      // `_mul_postfix`; keep the two in sync.
       postfix: ($) =>
         choice(
           prec(PRECEDENCE_AMP, seq($._expression, "&")),
@@ -371,6 +497,8 @@
           prec(PRECEDENCE_LONGNAME_HERMITIANCONJUGATE, seq($._expression, "\\[HermitianConjugate]")),
         ),
 
+      // NOTE: entries here with precedence > implicit Times (108) are mirrored in
+      // `_mul_binary`; keep the two in sync.
       binary: ($) =>
         choice(
           prec.left(PRECEDENCE_EQUAL, seq($._expression, "=", $._expression)),
@@ -478,6 +606,8 @@
           prec.left(PRECEDENCE_GREATERGREATERGREATER, seq($._expression, ">>>", $._expression)),
         ),
 
+      // NOTE: entries here with precedence > implicit Times (108) are mirrored in
+      // `_mul_infix`; keep the two in sync.
       infix: ($) =>
         choice(
           prec.left(PRECEDENCE_COMMA, seq($._expression, ",", $._expression)),
@@ -610,6 +740,8 @@
           ),
         ),
 
+      // NOTE: mirrored in `_mul_tilde` (tilde binds tighter than implicit Times);
+      // keep the two in sync.
       tilde: ($) =>
         prec.left(PRECEDENCE_TILDE, seq(
           $._expression,

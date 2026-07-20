@@ -856,3 +856,243 @@ c
   (infix
     (symbol))
   (symbol))
+
+================
+Implicit times - power binds to right operand
+================
+
+2x^2
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (integer))))
+
+================
+Implicit times - power binds to right operand (symbols)
+================
+
+a b^c
+
+---
+
+(source_file
+  (implicit_times
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Implicit times - chain then power on last factor
+================
+
+x y z^2
+
+---
+
+(source_file
+  (implicit_times
+    (implicit_times
+      (symbol)
+      (symbol))
+    (binary
+      (symbol)
+      (integer))))
+
+================
+Implicit times - division binds to right operand
+================
+
+2 x/y
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Implicit times - dot binds to right operand
+================
+
+2 x . y
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (infix
+      (symbol)
+      (symbol))))
+
+================
+Implicit times - prefix application binds to right operand
+================
+
+2 f@x
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Implicit times - postfix factorial binds to right operand
+================
+
+2 a!
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (postfix
+      (symbol))))
+
+================
+Implicit times - derivative binds to right operand
+================
+
+2 x'
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (postfix
+      (symbol))))
+
+================
+Implicit times - call binds to right operand
+================
+
+2 a[b]
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (call
+      head: (symbol)
+      arguments: (symbol))))
+
+================
+Implicit times - part binds to right operand
+================
+
+2 a[[1]]
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (part
+      head: (symbol)
+      arguments: (integer))))
+
+================
+Implicit times - message name binds to right operand
+================
+
+2 a::b
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (message_name
+      (symbol)
+      (message_tag))))
+
+================
+Implicit times - power on slot binds to right operand
+================
+
+2#^2
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (slot)
+      (integer))))
+
+================
+Implicit times - string join binds to right operand
+================
+
+2 a<>b
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (infix
+      (symbol)
+      (symbol))))
+
+================
+Implicit times - ternary tilde binds to right operand
+================
+
+2 a~f~b
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (tilde
+      (symbol)
+      function: (symbol)
+      (symbol))))
+
+================
+Implicit times - postfix on left factor
+================
+
+a!b
+
+---
+
+(source_file
+  (implicit_times
+    (postfix
+      (symbol))
+    (symbol)))
+
+================
+Implicit times - lower-precedence plus wraps product
+================
+
+2 x + 3
+
+---
+
+(source_file
+  (infix
+    (implicit_times
+      (integer)
+      (symbol))
+    (integer)))
