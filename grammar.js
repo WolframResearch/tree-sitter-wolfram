@@ -76,6 +76,8 @@
   (PRECEDENCE_LONGNAME_NOTDOUBLEVERTICALBAR = 74), // prec: 37, assoc: Associativity`NonRight
   (PRECEDENCE_CLASS_ORDERINGOPERATORS = 76), // prec: 38, assoc: Associativity`NonRight
   (PRECEDENCE_CLASS_INEQUALITY = 76), // prec: 38, assoc: Associativity`NonRight
+  (PRECEDENCE_INFIX_EQUILIBRIUM = 76), // prec: 38, assoc: Associativity`NonRight
+  (PRECEDENCE_INFIX_DISTRIBUTED = 76), // prec: 38, assoc: Associativity`NonRight
   (PRECEDENCE_LONGNAME_DIRECTEDEDGE = 79), // prec: 39, assoc: Associativity`Right
   (PRECEDENCE_LONGNAME_UNDIRECTEDEDGE = 79), // prec: 39, assoc: Associativity`Right
   (PRECEDENCE_SEMISEMI = 80), // prec: 40, assoc: Associativity`NonRight
@@ -178,6 +180,7 @@
   (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
   // Scientific-notation exponent of a number
   (NUMBER_EXPONENT = /\*\^[-+]?[0-9]+/),
+  (STRING = /\"([^\"\\]|\\(.|\n))*\"/),
 
   (module.exports = grammar({
     name: "wolfram",
@@ -358,7 +361,22 @@
           "]",
         )),
 
-      _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
+      _leaf: ($) =>
+        choice(
+          $.symbol,
+          $.integer,
+          $.real,
+          $.string,
+          $.slot,
+          $.slot_sequence,
+          $.blank,
+          $.blank_default,
+          $.blank_sequence,
+          $.blank_null_sequence,
+          $.named_character,
+          $.out,
+          $.linear_syntax,
+        ),
 
       symbol: ($) => token(seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
 
@@ -376,7 +394,11 @@
           ),
         ),
 
-      string: ($) => /\"([^\"\\]|\\(.|\n))*\"/,
+      string: ($) => STRING,
+
+      // this covers ToBoxes and similar constructs in WL
+      linear_syntax: ($) =>
+        token(seq("\\(", repeat(choice(/[^\\]/, /\\[^)]/)), "\\)")),
 
       // ## or ##n — SlotSequence
       slot_sequence: ($) => token(seq("##", optional(/[0-9]+/))),
@@ -421,17 +443,29 @@
         )),
 
       // f::name is MessageName[f, "name"], f::name::lang is MessageName[f, "name", "lang"]
-      // The tags after :: are unquoted strings, not symbols
+      // The tag may be written unquoted (f::name) or quoted (f::"name"); either way it
+      // is a string, not a symbol, and must follow :: immediately.
       message_name: ($) =>
-        prec.left(PRECEDENCE_COLONCOLON, seq(
-          $._expression,
-          "::",
-          alias(token.immediate(SYMBOL_NAME), $.message_tag),
-          optional(seq(
-            token.immediate("::"),
-            alias(token.immediate(SYMBOL_NAME), $.message_tag),
-          )),
-        )),
+        prec.left(
+          PRECEDENCE_COLONCOLON,
+          seq(
+            $._expression,
+            "::",
+            choice(
+              alias(token.immediate(SYMBOL_NAME), $.message_tag),
+              alias(token.immediate(STRING), $.message_tag),
+            ),
+            optional(
+              seq(
+                token.immediate("::"),
+                choice(
+                  alias(token.immediate(SYMBOL_NAME), $.message_tag),
+                  alias(token.immediate(STRING), $.message_tag),
+                ),
+              ),
+            ),
+          ),
+        ),
 
       // 2 x or 2x is Times[2, x] (implicit multiplication)
       // Dynamic precedence -1 ensures explicit operators (infix +, -, etc.) win
@@ -621,6 +655,8 @@
           // ("a; b" stays one CompoundExpression) and only reduces to the
           // trailing form when nothing can follow (newline or EOF).
           prec.left(PRECEDENCE_SEMI - 1, seq($._expression, ";")),
+          // same for the comma with the Null
+          prec.left(PRECEDENCE_COMMA - 1, seq($._expression, ",")),
           prec.left(
             PRECEDENCE_TILDETILDE,
             seq($._expression, "~~", $._expression),
@@ -698,6 +734,15 @@
           prec.left(PRECEDENCE_INFIX_LONGNAME_MINUS, seq($._expression, "\\[Minus]", $._expression)),
           prec.left(PRECEDENCE_INFIX_LONGNAME_PLUSMINUS, seq($._expression, "\\[PlusMinus]", $._expression)),
           prec.left(PRECEDENCE_INFIX_LONGNAME_MINUSPLUS, seq($._expression, "\\[MinusPlus]", $._expression)),
+
+          prec.left(
+            PRECEDENCE_INFIX_EQUILIBRIUM,
+            seq($._expression, "\\[Equilibrium]", $._expression),
+          ),
+          prec.left(
+            PRECEDENCE_INFIX_DISTRIBUTED,
+            seq($._expression, "\\[Distributed]", $._expression),
+          ),
         ),
 
       call: ($) =>
