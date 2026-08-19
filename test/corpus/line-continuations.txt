@@ -1,0 +1,127 @@
+================
+Line continuation before another comment
+================
+
+(* a *)\
+(* b *)
+x = 1
+
+---
+
+(source_file
+  (comment)
+  (comment)
+  (binary
+    (symbol)
+    (integer)))
+
+================
+Continuation before a blank line still ends the statement
+================
+
+a \
+
+b
+
+---
+
+(source_file
+  (symbol)
+  (symbol))
+
+================
+Backslash before a space is not a line continuation
+:error
+================
+
+a \ b
+
+---
+
+(source_file)
+
+================
+Backslash before a tab is not a line continuation
+:error
+================
+
+a \	b
+
+---
+
+(source_file)
+
+================
+Backslash before a space on an assignment right-hand side
+:error
+================
+
+x = \ 5
+
+---
+
+(source_file)
+
+================
+Line continuation inside a list
+================
+
+{1, 2, \
+3}
+
+---
+
+(source_file
+  (group
+    (infix
+      (infix
+        (integer)
+        (integer))
+      (integer))))
+
+================
+Line continuation between operator and operand
+================
+
+a = 1 + \
+2
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (infix
+      (integer)
+      (integer))))
+
+================
+Line continuation inside a call argument list
+================
+
+f[a, \
+b]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (infix
+      (symbol)
+      (symbol))))
+
+================
+Line continuation after a comment
+================
+
+(* note *)\
+a = 1
+
+---
+
+(source_file
+  (comment)
+  (binary
+    (symbol)
+    (integer)))
