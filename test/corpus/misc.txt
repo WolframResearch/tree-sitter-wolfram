@@ -178,7 +178,7 @@ Tilde infix - call form
         (integer)))))
 
 ================
-Named character - standalone
+Named character - standalone is a symbol
 ================
 
 \[Alpha]
@@ -186,10 +186,10 @@ Named character - standalone
 ---
 
 (source_file
-  (named_character))
+  (symbol))
 
 ================
-Named character - in list
+Named character - letter-like characters in a list are symbols
 ================
 
 {\[Alpha], \[Beta]}
@@ -199,8 +199,8 @@ Named character - in list
 (source_file
   (group
     (infix
-      (named_character)
-      (named_character))))
+      (symbol)
+      (symbol))))
 
 ================
 Named character - Rule operator

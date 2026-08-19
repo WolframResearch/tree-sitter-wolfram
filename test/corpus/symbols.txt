@@ -1,0 +1,79 @@
+================
+Context-qualified symbol
+================
+
+Foo`Bar`baz
+
+---
+
+(source_file
+  (symbol))
+
+================
+Bare context name as Get argument
+================
+
+<<Provisional`
+
+---
+
+(source_file
+  (prefix
+    (symbol)))
+
+================
+Bare context name
+================
+
+Foo`Bar`
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character starts a symbol name
+================
+
+\[CapitalDelta]G
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character inside a symbol name
+================
+
+x\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character after a context mark
+================
+
+System`\[FilledSquare]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character symbol as a call head
+================
+
+\[CapitalDelta]G[strand]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))

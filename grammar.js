@@ -173,7 +173,29 @@
   (PRECEDENCE_UNDER = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_ASSERTFALSE = 190), // prec: 95, assoc: Associativity`NonRight
   // Base pattern for a symbol name segment (no context backticks)
-  (SYMBOL_NAME = /[$a-zA-Z][$a-zA-Z0-9]*/),
+  // Named characters Wolfram treats as letters: valid inside a symbol name.
+  // Verified with MatchQ[ToExpression["a"<>ch<>"b", InputForm, HoldComplete],
+  // HoldComplete[_Symbol]]. Operators like \[Rule] must NOT be listed here.
+  (LETTER_CHARACTER = choice(
+    "\\[CapitalDelta]",
+    "\\[CapitalSigma]",
+    "\\[Alpha]",
+    "\\[Beta]",
+    "\\[Pi]",
+    "\\[Sigma]",
+    "\\[Lambda]",
+    "\\[CurlyEpsilon]",
+    "\\[FilledSquare]",
+    "\\[FilledCircle]",
+    "\\[FilledDiamond]",
+    "\\[EmptySquare]",
+    "\\[EmptyCircle]",
+    "\\[Infinity]",
+  )),
+  (SYMBOL_NAME = seq(
+    choice(/[$a-zA-Z]/, LETTER_CHARACTER),
+    repeat(choice(/[$a-zA-Z0-9]/, LETTER_CHARACTER)),
+  )),
   // Precision (`) or accuracy (``) mark of a number, with an optional integer or real value
   (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
   // Scientific-notation exponent of a number
@@ -360,7 +382,15 @@
 
       _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
 
-      symbol: ($) => token(seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
+      symbol: ($) =>
+        token(
+          seq(
+            optional("`"),
+            repeat(seq(SYMBOL_NAME, "`")),
+            SYMBOL_NAME,
+            optional("`"),
+          ),
+        ),
 
       integer: ($) =>
         token(
