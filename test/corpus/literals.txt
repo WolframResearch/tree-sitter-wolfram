@@ -222,21 +222,19 @@ SlotSequence - zero
   (slot_sequence))
 
 ; ================
-; Slot in pure function
-; ================
-;
-; #1 + #2 &
-;
-; ---
-;
-; (source_file
-;   (postfix
-;     (infix
-;       (slot)
-;       (slot))))
-;
-; KNOWN ISSUE: implicit_times + GLR makes prefix + sneak in via postfix wrapping.
-; tree-sitter picks implicit_times(#1, postfix(prefix(+, #2), &)) instead.
+================
+Slot in pure function
+================
+
+#1 + #2 &
+
+---
+
+(source_file
+  (postfix
+    (infix
+      (slot)
+      (slot))))
 
 ================
 Symbol - simple
