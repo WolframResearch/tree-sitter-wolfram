@@ -30,3 +30,5 @@ This grammar is used by the [zed-wolfram-highlighter](https://github.com/Wolfram
 ## License
 
 MIT
+
+Originally based on [bostick/tree-sitter-wolfram](https://github.com/bostick/tree-sitter-wolfram) by Brenton Bostick (2021).
