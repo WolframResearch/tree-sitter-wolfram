@@ -3806,31 +3806,6 @@
           "members": [
             {
               "type": "STRING",
-              "value": "["
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_expression"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
-            {
-              "type": "STRING",
-              "value": "]"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
               "value": "<|"
             },
             {
@@ -3864,43 +3839,7 @@
       "value": "\\s"
     }
   ],
-  "conflicts": [
-    [
-      "implicit_times",
-      "prefix",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "binary",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "infix",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "call",
-      "tilde"
-    ],
-    [
-      "implicit_times",
-      "_mul_binary",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "_mul_infix",
-      "call"
-    ],
-    [
-      "implicit_times",
-      "_mul_tilde",
-      "call"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [
     {
