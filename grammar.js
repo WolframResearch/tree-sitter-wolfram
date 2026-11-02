@@ -182,18 +182,6 @@
 
     externals: ($) => [$.comment, $._statement_sep],
 
-    // implicit_times (expr expr) creates GLR ambiguity with certain operator
-    // combinations. Only the conflict sets tree-sitter actually needs are listed.
-    conflicts: ($) => [
-      [$.implicit_times, $.prefix, $.call],
-      [$.implicit_times, $.binary, $.call],
-      [$.implicit_times, $.infix, $.call],
-      [$.implicit_times, $.call, $.tilde],
-      [$.implicit_times, $._mul_binary, $.call],
-      [$.implicit_times, $._mul_infix, $.call],
-      [$.implicit_times, $._mul_tilde, $.call],
-    ],
-
     rules: {
       // Top-level expressions are separated by statement separators (significant
       // newlines emitted by the external scanner). A statement separator is only
@@ -256,7 +244,7 @@
       // Because prefix is excluded and heads are restricted, the choice between
       // "reduce implicit_times" and "shift a tighter operator" resolves by static
       // precedence (108 vs the operator's precedence), so no GLR conflict is
-      // needed for these forms.
+      // needed.
       _mul_operand: ($) =>
         choice(
           $._leaf,
@@ -755,7 +743,8 @@
         choice(
           seq("{", optional($._expression), "}"),
           seq("(", optional($._expression), ")"),
-          seq("[", optional($._expression), "]"),
+          // No bare `[...]` group: WL has no such syntax, and omitting it keeps
+          // `a / b [c]` unambiguous.
           seq("<|", optional($._expression), "|>"),
         ),
     },

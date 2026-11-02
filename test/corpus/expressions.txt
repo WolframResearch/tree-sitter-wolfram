@@ -1096,3 +1096,51 @@ Implicit times - lower-precedence plus wraps product
       (integer)
       (symbol))
     (integer)))
+
+================
+Call binds tighter than a preceding binary operator
+================
+
+a / b [c]
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (call
+      head: (symbol)
+      arguments: (symbol))))
+
+================
+Call binds tighter than a preceding prefix operator
+================
+
+--x[1]
+
+---
+
+(source_file
+  (prefix
+    (call
+      head: (symbol)
+      arguments: (integer))))
+
+================
+Bare square brackets are not a group
+:error
+================
+
+[a]
+
+---
+
+================
+Bare square brackets on a new line are not a group
+:error
+================
+
+a
+[b]
+
+---
