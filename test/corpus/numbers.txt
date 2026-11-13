@@ -195,3 +195,91 @@ Integer scientific notation
 
 (source_file
   (integer))
+
+================
+Integer precision mark
+================
+
+x = 1.5`10
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (real)))
+
+================
+Bare precision mark
+================
+
+x = 2`
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (integer)))
+
+================
+Real-valued precision mark
+================
+
+x = 6.`3.
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (real)))
+
+================
+Real-valued accuracy mark
+================
+
+x = 0.9889000000000000057`4.
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (real)))
+
+================
+Real-valued precision mark inside a list
+================
+
+{0.004`20., 0}
+
+---
+
+(source_file
+  (group
+    (infix
+      (real)
+      (integer))))
+
+================
+Explicit plus sign in an integer exponent
+================
+
+2*^+5
+
+---
+
+(source_file
+  (integer))
+
+================
+Explicit plus sign in a real exponent
+================
+
+1.5*^+5
+
+---
+
+(source_file
+  (real))
