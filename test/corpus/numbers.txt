@@ -197,17 +197,15 @@ Integer scientific notation
   (integer))
 
 ================
-Integer precision mark
+Integer with precision specification
 ================
 
-x = 1.5`10
+2`10
 
 ---
 
 (source_file
-  (binary
-    (symbol)
-    (real)))
+  (integer))
 
 ================
 Bare precision mark
@@ -236,7 +234,7 @@ x = 6.`3.
     (real)))
 
 ================
-Real-valued accuracy mark
+Real-valued precision mark on an arbitrary-precision real
 ================
 
 x = 0.9889000000000000057`4.
@@ -278,6 +276,50 @@ Explicit plus sign in a real exponent
 ================
 
 1.5*^+5
+
+---
+
+(source_file
+  (real))
+
+================
+Real-valued accuracy mark
+================
+
+1.5``4.
+
+---
+
+(source_file
+  (real))
+
+================
+Integer with accuracy specification
+================
+
+2``10
+
+---
+
+(source_file
+  (integer))
+
+================
+Real-valued precision mark with exponent
+================
+
+1.5`10.*^+3
+
+---
+
+(source_file
+  (real))
+
+================
+Base notation with real-valued precision mark
+================
+
+16^^ff.a`10.5
 
 ---
 
