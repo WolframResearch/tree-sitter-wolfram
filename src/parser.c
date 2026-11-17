@@ -20,7 +20,7 @@
 #define SYMBOL_COUNT 162
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 129
-#define EXTERNAL_TOKEN_COUNT 2
+#define EXTERNAL_TOKEN_COUNT 3
 #define FIELD_COUNT 5
 #define MAX_ALIAS_SEQUENCE_LENGTH 5
 #define MAX_RESERVED_WORD_SET_SIZE 0
@@ -5145,28 +5145,28 @@ static const TSLexerMode ts_lex_modes[STATE_COUNT] = {
   [581] = {.lex_state = 285, .external_lex_state = 2},
   [582] = {.lex_state = 285, .external_lex_state = 2},
   [583] = {.lex_state = 285, .external_lex_state = 1},
-  [584] = {.lex_state = 0, .external_lex_state = 1},
-  [585] = {.lex_state = 0, .external_lex_state = 1},
-  [586] = {.lex_state = 0, .external_lex_state = 1},
-  [587] = {.lex_state = 40, .external_lex_state = 2},
-  [588] = {.lex_state = 40, .external_lex_state = 2},
-  [589] = {.lex_state = 40, .external_lex_state = 2},
-  [590] = {.lex_state = 40, .external_lex_state = 2},
-  [591] = {.lex_state = 40, .external_lex_state = 2},
-  [592] = {.lex_state = 41, .external_lex_state = 2},
-  [593] = {.lex_state = 41, .external_lex_state = 2},
-  [594] = {.lex_state = 41, .external_lex_state = 2},
-  [595] = {.lex_state = 40, .external_lex_state = 2},
-  [596] = {.lex_state = 40, .external_lex_state = 2},
-  [597] = {.lex_state = 0, .external_lex_state = 2},
-  [598] = {.lex_state = 40, .external_lex_state = 2},
-  [599] = {.lex_state = 0, .external_lex_state = 2},
-  [600] = {.lex_state = 40, .external_lex_state = 2},
-  [601] = {.lex_state = 40, .external_lex_state = 2},
-  [602] = {.lex_state = 0, .external_lex_state = 2},
-  [603] = {.lex_state = 40, .external_lex_state = 2},
-  [604] = {.lex_state = 40, .external_lex_state = 2},
-  [605] = {.lex_state = 0, .external_lex_state = 2},
+  [584] = {.lex_state = 0, .external_lex_state = 3},
+  [585] = {.lex_state = 0, .external_lex_state = 3},
+  [586] = {.lex_state = 0, .external_lex_state = 3},
+  [587] = {.lex_state = 40, .external_lex_state = 4},
+  [588] = {.lex_state = 40, .external_lex_state = 4},
+  [589] = {.lex_state = 40, .external_lex_state = 4},
+  [590] = {.lex_state = 40, .external_lex_state = 4},
+  [591] = {.lex_state = 40, .external_lex_state = 4},
+  [592] = {.lex_state = 41, .external_lex_state = 4},
+  [593] = {.lex_state = 41, .external_lex_state = 4},
+  [594] = {.lex_state = 41, .external_lex_state = 4},
+  [595] = {.lex_state = 40, .external_lex_state = 4},
+  [596] = {.lex_state = 40, .external_lex_state = 4},
+  [597] = {.lex_state = 0, .external_lex_state = 4},
+  [598] = {.lex_state = 40, .external_lex_state = 4},
+  [599] = {.lex_state = 0, .external_lex_state = 4},
+  [600] = {.lex_state = 40, .external_lex_state = 4},
+  [601] = {.lex_state = 40, .external_lex_state = 4},
+  [602] = {.lex_state = 0, .external_lex_state = 4},
+  [603] = {.lex_state = 40, .external_lex_state = 4},
+  [604] = {.lex_state = 40, .external_lex_state = 4},
+  [605] = {.lex_state = 0, .external_lex_state = 4},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -69170,19 +69170,30 @@ static const TSParseActionEntry ts_parse_actions[] = {
 enum ts_external_scanner_symbol_identifiers {
   ts_external_token_comment = 0,
   ts_external_token__statement_sep = 1,
+  ts_external_token_integer = 2,
 };
 
 static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token_comment] = sym_comment,
   [ts_external_token__statement_sep] = sym__statement_sep,
+  [ts_external_token_integer] = sym_integer,
 };
 
-static const bool ts_external_scanner_states[3][EXTERNAL_TOKEN_COUNT] = {
+static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
     [ts_external_token_comment] = true,
     [ts_external_token__statement_sep] = true,
+    [ts_external_token_integer] = true,
   },
   [2] = {
+    [ts_external_token_comment] = true,
+    [ts_external_token_integer] = true,
+  },
+  [3] = {
+    [ts_external_token_comment] = true,
+    [ts_external_token__statement_sep] = true,
+  },
+  [4] = {
     [ts_external_token_comment] = true,
   },
 };

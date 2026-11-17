@@ -308,3 +308,124 @@ Base notation with real-valued precision mark
 
 (source_file
   (real))
+
+================
+Trailing-dot real is still a real
+================
+
+2.
+
+---
+
+(source_file
+  (real))
+
+================
+Decimal real is still a real
+================
+
+2.5
+
+---
+
+(source_file
+  (real))
+
+================
+Repeated on a symbol
+================
+
+{a..}
+
+---
+
+(source_file
+  (group
+    (postfix
+      (symbol))))
+
+================
+Repeated on a spaced integer
+================
+
+{2 ..}
+
+---
+
+(source_file
+  (group
+    (postfix
+      (integer))))
+
+================
+Repeated on an integer literal
+================
+
+{2..}
+
+---
+
+(source_file
+  (group
+    (postfix
+      (integer))))
+
+================
+RepeatedNull on an integer literal
+================
+
+{0...}
+
+---
+
+(source_file
+  (group
+    (postfix
+      (integer))))
+
+================
+Repeated integer as a rule left-hand side
+================
+
+Rule[{0..}, 0]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (infix
+      (group
+        (postfix
+          (integer)))
+      (integer))))
+
+================
+Repeated integer after a line break
+================
+
+f[a,
+2..]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (infix
+      (symbol)
+      (postfix
+        (integer)))))
+
+================
+Precision mark followed by Repeated
+================
+
+{0.`..}
+
+---
+
+(source_file
+  (group
+    (postfix
+      (real))))
