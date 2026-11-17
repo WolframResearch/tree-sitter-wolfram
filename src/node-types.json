@@ -52,6 +52,10 @@
           "named": true
         },
         {
+          "type": "linear_syntax",
+          "named": true
+        },
+        {
           "type": "message_name",
           "named": true
         },
@@ -187,6 +191,10 @@
             "named": true
           },
           {
+            "type": "linear_syntax",
+            "named": true
+          },
+          {
             "type": "message_name",
             "named": true
           },
@@ -294,6 +302,10 @@
           },
           {
             "type": "integer",
+            "named": true
+          },
+          {
+            "type": "linear_syntax",
             "named": true
           },
           {
@@ -428,6 +440,10 @@
           "named": true
         },
         {
+          "type": "linear_syntax",
+          "named": true
+        },
+        {
           "type": "message_name",
           "named": true
         },
@@ -540,6 +556,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -658,6 +678,10 @@
           "named": true
         },
         {
+          "type": "linear_syntax",
+          "named": true
+        },
+        {
           "type": "message_name",
           "named": true
         },
@@ -770,6 +794,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -892,6 +920,10 @@
             "named": true
           },
           {
+            "type": "linear_syntax",
+            "named": true
+          },
+          {
             "type": "message_name",
             "named": true
           },
@@ -999,6 +1031,10 @@
           },
           {
             "type": "integer",
+            "named": true
+          },
+          {
+            "type": "linear_syntax",
             "named": true
           },
           {
@@ -1156,6 +1192,10 @@
           "named": true
         },
         {
+          "type": "linear_syntax",
+          "named": true
+        },
+        {
           "type": "message_name",
           "named": true
         },
@@ -1268,6 +1308,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -1387,6 +1431,10 @@
           "named": true
         },
         {
+          "type": "linear_syntax",
+          "named": true
+        },
+        {
           "type": "message_name",
           "named": true
         },
@@ -1499,6 +1547,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -1617,6 +1669,10 @@
             "named": true
           },
           {
+            "type": "linear_syntax",
+            "named": true
+          },
+          {
             "type": "message_name",
             "named": true
           },
@@ -1725,6 +1781,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -1843,6 +1903,10 @@
             "named": true
           },
           {
+            "type": "linear_syntax",
+            "named": true
+          },
+          {
             "type": "message_name",
             "named": true
           },
@@ -1951,6 +2015,10 @@
         },
         {
           "type": "integer",
+          "named": true
+        },
+        {
+          "type": "linear_syntax",
           "named": true
         },
         {
@@ -2285,6 +2353,10 @@
     "named": false
   },
   {
+    "type": "\\[Distributed]",
+    "named": false
+  },
+  {
     "type": "\\[Divide]",
     "named": false
   },
@@ -2294,6 +2366,10 @@
   },
   {
     "type": "\\[DivisionSlash]",
+    "named": false
+  },
+  {
+    "type": "\\[Equilibrium]",
     "named": false
   },
   {
@@ -2443,6 +2519,10 @@
   },
   {
     "type": "integer",
+    "named": true
+  },
+  {
+    "type": "linear_syntax",
     "named": true
   },
   {

@@ -1,0 +1,190 @@
+================
+Trailing comma in a list is an implicit Null
+================
+
+{a, b,}
+
+---
+
+(source_file
+  (group
+    (infix
+      (infix
+        (symbol)
+        (symbol)))))
+
+================
+Trailing comma in a call is an implicit Null
+================
+
+f[a,]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (infix
+      (symbol))))
+
+================
+Empty Module body is an implicit Null
+================
+
+Module[{dataPackets},]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (infix
+      (group
+        (symbol)))))
+
+================
+Equilibrium is an infix operator
+================
+
+a\[Equilibrium]b
+
+---
+
+(source_file
+  (infix
+    (symbol)
+    (symbol)))
+
+================
+Equilibrium binds looser than Plus
+================
+
+a+b\[Equilibrium]c+d
+
+---
+
+(source_file
+  (infix
+    (infix
+      (symbol)
+      (symbol))
+    (infix
+      (symbol)
+      (symbol))))
+
+================
+Equilibrium binds tighter than Equal
+================
+
+a\[Equilibrium]b==c
+
+---
+
+(source_file
+  (infix
+    (infix
+      (symbol)
+      (symbol))
+    (symbol)))
+
+================
+Equilibrium binds looser than DirectedEdge
+================
+
+a\[Equilibrium]b\[DirectedEdge]c
+
+---
+
+(source_file
+  (infix
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Equilibrium binds looser than Span
+================
+
+a\[Equilibrium]b;;c
+
+---
+
+(source_file
+  (infix
+    (symbol)
+    (span
+      (symbol)
+      (symbol))))
+
+================
+Distributed is an infix operator
+================
+
+A\[Distributed]NormalDistribution[2, 1]
+
+---
+
+(source_file
+  (infix
+    (symbol)
+    (call
+      head: (symbol)
+      arguments: (infix
+        (integer)
+        (integer)))))
+
+================
+Quoted message tag
+================
+
+function::"text"
+
+---
+
+(source_file
+  (message_name
+    (symbol)
+    (message_tag)))
+
+================
+Quoted message tag inside a rule-delayed option
+================
+
+Messages :> {TestMessage::"TestMessage"}
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (group
+      (message_name
+        (symbol)
+        (message_tag)))))
+
+================
+MessageName binds tighter than call, so a message_name head is correct
+================
+
+a::b[x]
+
+---
+
+(source_file
+  (call
+    head: (message_name
+      (symbol)
+      (message_tag))
+    arguments: (symbol)))
+
+================
+Linear syntax box expression is opaque
+================
+
+\(\ * ToBoxes[#1]\)
+
+---
+
+(source_file
+  (linear_syntax))
