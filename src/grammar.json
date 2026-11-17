@@ -1043,12 +1043,76 @@
       }
     },
     "integer": {
-      "type": "PATTERN",
-      "value": "([0-9]+\\^\\^[0-9a-zA-Z]+|[0-9]+)(`{1,2}([0-9]+\\.?[0-9]*)?)?(\\*\\^(-|\\+)?[0-9]+)?"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[0-9]+\\^\\^[0-9a-zA-Z]+|[0-9]+"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "`{1,2}([0-9]+\\.?[0-9]*)?"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "\\*\\^[-+]?[0-9]+"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "real": {
-      "type": "PATTERN",
-      "value": "(([0-9]+\\^\\^)([0-9a-zA-Z]+\\.[0-9a-zA-Z]*|\\.[0-9a-zA-Z]+)|[0-9]+\\.[0-9]*|\\.[0-9]+)(`{1,2}([0-9]+\\.?[0-9]*)?)?(\\*\\^(-|\\+)?[0-9]+)?"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "([0-9]+\\^\\^)([0-9a-zA-Z]+\\.[0-9a-zA-Z]*|\\.[0-9a-zA-Z]+)|[0-9]+\\.[0-9]*|\\.[0-9]+"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "`{1,2}([0-9]+\\.?[0-9]*)?"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "PATTERN",
+                "value": "\\*\\^[-+]?[0-9]+"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "string": {
       "type": "PATTERN",

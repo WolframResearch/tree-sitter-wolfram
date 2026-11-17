@@ -174,6 +174,10 @@
   (PRECEDENCE_ASSERTFALSE = 190), // prec: 95, assoc: Associativity`NonRight
   // Base pattern for a symbol name segment (no context backticks)
   (SYMBOL_NAME = /[$a-zA-Z][$a-zA-Z0-9]*/),
+  // Precision (`) or accuracy (``) mark of a number, with an optional integer or real value
+  (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
+  // Scientific-notation exponent of a number
+  (NUMBER_EXPONENT = /\*\^[-+]?[0-9]+/),
 
   (module.exports = grammar({
     name: "wolfram",
@@ -359,10 +363,18 @@
       symbol: ($) => token(seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
 
       integer: ($) =>
-        /([0-9]+\^\^[0-9a-zA-Z]+|[0-9]+)(`{1,2}([0-9]+\.?[0-9]*)?)?(\*\^(-|\+)?[0-9]+)?/,
+        token(
+          seq(/[0-9]+\^\^[0-9a-zA-Z]+|[0-9]+/, optional(NUMBER_MARK), optional(NUMBER_EXPONENT)),
+        ),
 
       real: ($) =>
-        /(([0-9]+\^\^)([0-9a-zA-Z]+\.[0-9a-zA-Z]*|\.[0-9a-zA-Z]+)|[0-9]+\.[0-9]*|\.[0-9]+)(`{1,2}([0-9]+\.?[0-9]*)?)?(\*\^(-|\+)?[0-9]+)?/,
+        token(
+          seq(
+            /([0-9]+\^\^)([0-9a-zA-Z]+\.[0-9a-zA-Z]*|\.[0-9a-zA-Z]+)|[0-9]+\.[0-9]*|\.[0-9]+/,
+            optional(NUMBER_MARK),
+            optional(NUMBER_EXPONENT),
+          ),
+        ),
 
       string: ($) => /\"([^\"\\]|\\(.|\n))*\"/,
 
