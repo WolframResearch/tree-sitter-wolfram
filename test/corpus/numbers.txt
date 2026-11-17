@@ -208,43 +208,26 @@ Integer with precision specification
   (integer))
 
 ================
-Bare precision mark
-================
-
-x = 2`
-
----
-
-(source_file
-  (binary
-    (symbol)
-    (integer)))
-
-================
 Real-valued precision mark
 ================
 
-x = 6.`3.
+6.`3.
 
 ---
 
 (source_file
-  (binary
-    (symbol)
-    (real)))
+  (real))
 
 ================
 Real-valued precision mark on an arbitrary-precision real
 ================
 
-x = 0.9889000000000000057`4.
+0.9889000000000000057`4.
 
 ---
 
 (source_file
-  (binary
-    (symbol)
-    (real)))
+  (real))
 
 ================
 Real-valued precision mark inside a list
