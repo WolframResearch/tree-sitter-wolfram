@@ -1,0 +1,154 @@
+================
+Set is right-associative
+================
+
+a = b = c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+SetDelayed is right-associative
+================
+
+a := b := c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+SetDelayed wrapping a TagSetDelayed
+================
+
+installMakeBoxes[] := Simulation /: MakeBoxes[spec] := body
+
+---
+
+(source_file
+  (binary
+    (call
+      head: (symbol))
+    (binary
+      (binary
+        (symbol)
+        (call
+          head: (symbol)
+          arguments: (symbol)))
+      (symbol))))
+
+================
+UpSet is right-associative
+================
+
+a ^= b ^= c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+UpSetDelayed is right-associative
+================
+
+a ^:= b ^:= c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Map is right-associative
+================
+
+f /@ g /@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+MapAll is right-associative
+================
+
+f //@ g //@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Apply at level 1 is right-associative
+================
+
+f @@@ g @@@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Function arrow is right-associative
+================
+
+x |-> y |-> z
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Single prefix-apply before a call is not over-reached
+================
+
+f /@ g[x]
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (call
+      head: (symbol)
+      arguments: (symbol))))
