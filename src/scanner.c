@@ -7,6 +7,10 @@ enum TokenType {
   STATEMENT_SEP
 };
 
+static inline bool is_horizontal_space(int32_t c) {
+  return c == ' ' || c == '\t' || c == '\r' || c == '\f' || c == '\v';
+}
+
 static bool scan_comment(TSLexer *lexer) {
   int depth = 1;
 
@@ -61,10 +65,23 @@ bool tree_sitter_wolfram_external_scanner_scan(void *payload, TSLexer *lexer, co
   // expressions) is significant: it splits statements rather than acting as the
   // whitespace glue that would otherwise form an implicit_times. Inside brackets
   // STATEMENT_SEP is never valid, so newlines there remain insignificant.
-  while (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
-         lexer->lookahead == '\r' || lexer->lookahead == '\f' ||
-         lexer->lookahead == '\v') {
-    lexer->advance(lexer, true);
+  for (;;) {
+    if (is_horizontal_space(lexer->lookahead)) {
+      lexer->advance(lexer, true);
+      continue;
+    }
+    if (lexer->lookahead == '\\') {
+      lexer->advance(lexer, true);
+      if (lexer->lookahead == '\r') {
+        lexer->advance(lexer, true);
+      }
+      if (lexer->lookahead == '\n') {
+        lexer->advance(lexer, true);
+        continue;
+      }
+      return false;
+    }
+    break;
   }
 
   if (valid_symbols[STATEMENT_SEP] && lexer->lookahead == '\n') {
