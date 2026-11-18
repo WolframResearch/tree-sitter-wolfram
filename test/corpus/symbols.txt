@@ -1,8 +1,8 @@
 ================
-Context-qualified symbol
+Symbol - simple
 ================
 
-Foo`Bar`baz
+foo
 
 ---
 
@@ -10,7 +10,75 @@ Foo`Bar`baz
   (symbol))
 
 ================
-Bare context name as Get argument
+Symbol - with dollar sign
+================
+
+foo$bar12
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - dollar prefix
+================
+
+$foo
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - context qualified
+================
+
+Global`x
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - nested context
+================
+
+my`contex`f
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - relative context (leading backtick)
+================
+
+`localSymbol
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - context qualified call
+================
+
+my`contex`f[my`var`x]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))
+
+================
+Symbol - bare context name as Get argument
 ================
 
 <<Provisional`
@@ -22,7 +90,7 @@ Bare context name as Get argument
     (symbol)))
 
 ================
-Bare context name
+Symbol - bare context name
 ================
 
 Foo`Bar`
@@ -33,7 +101,7 @@ Foo`Bar`
   (symbol))
 
 ================
-Letter-like named character starts a symbol name
+Symbol - letter-like named character at the start
 ================
 
 \[CapitalDelta]G
@@ -44,7 +112,7 @@ Letter-like named character starts a symbol name
   (symbol))
 
 ================
-Letter-like named character inside a symbol name
+Symbol - letter-like named character after a letter
 ================
 
 x\[Alpha]
@@ -55,7 +123,7 @@ x\[Alpha]
   (symbol))
 
 ================
-Letter-like named character after a context mark
+Symbol - letter-like named character after a context mark
 ================
 
 System`\[FilledSquare]
@@ -66,7 +134,7 @@ System`\[FilledSquare]
   (symbol))
 
 ================
-Letter-like named character symbol as a call head
+Symbol - letter-like named character in a call head
 ================
 
 \[CapitalDelta]G[strand]
@@ -77,3 +145,28 @@ Letter-like named character symbol as a call head
   (call
     head: (symbol)
     arguments: (symbol)))
+
+================
+Symbol - letter-like named character alone
+================
+
+\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named characters in a list
+================
+
+{\[Alpha], \[Beta]}
+
+---
+
+(source_file
+  (group
+    (infix
+      (symbol)
+      (symbol))))

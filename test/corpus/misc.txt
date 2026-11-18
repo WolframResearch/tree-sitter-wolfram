@@ -178,31 +178,6 @@ Tilde infix - call form
         (integer)))))
 
 ================
-Named character - standalone is a symbol
-================
-
-\[Alpha]
-
----
-
-(source_file
-  (symbol))
-
-================
-Named character - letter-like characters in a list are symbols
-================
-
-{\[Alpha], \[Beta]}
-
----
-
-(source_file
-  (group
-    (infix
-      (symbol)
-      (symbol))))
-
-================
 Named character - Rule operator
 ================
 

@@ -172,7 +172,6 @@
   (PRECEDENCE_SYMBOL = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_UNDER = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_ASSERTFALSE = 190), // prec: 95, assoc: Associativity`NonRight
-  // Base pattern for a symbol name segment (no context backticks)
   // Named characters Wolfram treats as letters: valid inside a symbol name.
   // Verified with MatchQ[ToExpression["a"<>ch<>"b", InputForm, HoldComplete],
   // HoldComplete[_Symbol]]. Operators like \[Rule] must NOT be listed here.
@@ -192,6 +191,7 @@
     "\\[EmptyCircle]",
     "\\[Infinity]",
   )),
+  // Base pattern for a symbol name segment (no context backticks)
   (SYMBOL_NAME = seq(
     choice(/[$a-zA-Z]/, LETTER_CHARACTER),
     repeat(choice(/[$a-zA-Z0-9]/, LETTER_CHARACTER)),
