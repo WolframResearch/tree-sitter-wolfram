@@ -1,0 +1,198 @@
+================
+Symbol - simple
+================
+
+foo
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - with dollar sign
+================
+
+foo$bar12
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - dollar prefix
+================
+
+$foo
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - context qualified
+================
+
+Global`x
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - nested context
+================
+
+my`contex`f
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - relative context (leading backtick)
+================
+
+`localSymbol
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - context qualified call
+================
+
+my`contex`f[my`var`x]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))
+
+================
+Symbol - letter-like named character at the start
+================
+
+\[CapitalDelta]G
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named character after a letter
+================
+
+x\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named character after a context mark
+================
+
+System`\[FilledSquare]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named character in a call head
+================
+
+\[CapitalDelta]G[strand]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))
+
+================
+Symbol - letter-like named character alone
+================
+
+\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named characters in a list
+================
+
+{\[Alpha], \[Beta]}
+
+---
+
+(source_file
+  (group
+    (infix
+      (symbol)
+      (symbol))))
+
+================
+Symbol - letter-like named characters outside the Greek alphabet
+================
+
+\[ScriptCapitalL]\[Degree]2
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named character between letters
+================
+
+a\[Gamma]b
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - trailing context mark is an error
+:error
+================
+
+Foo`Bar`
+
+---
+
+================
+Symbol - trailing context mark before an operator is an error
+:error
+================
+
+a`*b
+
+---
+
+================
+Symbol - trailing context mark before brackets is an error
+:error
+================
+
+Foo`[x]
+
+---

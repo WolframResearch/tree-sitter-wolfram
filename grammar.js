@@ -172,8 +172,22 @@
   (PRECEDENCE_SYMBOL = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_UNDER = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_ASSERTFALSE = 190), // prec: 95, assoc: Associativity`NonRight
+  // Long names (\[Name]) valid anywhere in a symbol name: those whose category
+  // in CodeParser's LongNames.wl is LetterlikeCharacter.
+  // scripts/letterlike-long-names.wls writes data/letterlike-long-names.json
+  // from that file. Operator long names such as \[Rule] are in another
+  // category and must not be listed.
+  (LETTERLIKE_LONG_NAME = choice(
+    ...require("./data/letterlike-long-names.json").map((name) => `\\[${name}]`),
+  )),
   // Base pattern for a symbol name segment (no context backticks)
-  (SYMBOL_NAME = /[$a-zA-Z][$a-zA-Z0-9]*/),
+  (SYMBOL_NAME = seq(
+    choice(/[$a-zA-Z]/, LETTERLIKE_LONG_NAME),
+    repeat(choice(/[$a-zA-Z0-9]/, LETTERLIKE_LONG_NAME)),
+  )),
+  // A symbol: name segments joined by context marks, with an optional leading
+  // context mark for a relative context
+  (SYMBOL = seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
   // Precision (`) or accuracy (``) mark of a number, with an optional integer or real value
   (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
   // Scientific-notation exponent of a number
@@ -360,7 +374,7 @@
 
       _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
 
-      symbol: ($) => token(seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
+      symbol: ($) => token(SYMBOL),
 
       integer: ($) =>
         token(
@@ -388,7 +402,7 @@
       blank: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "_",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
 
       // _. — Optional with built-in default: Optional[Blank[]]
@@ -399,15 +413,26 @@
       blank_sequence: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "__",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
 
       // ___ with optional head: ___, ___Integer
       blank_null_sequence: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "___",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
+
+      // Operand of <<, >> and >>>: a string, or a file name without quotes.
+      // An unquoted file name holds letters, digits, the characters
+      // ` / . \ ! - _ : $ * ~ ?, and bracket pairs enclosing no whitespace
+      // (tutorial/OperatorInputForms, "File Names"). A bare context name
+      // such as Foo`Bar` is a file name. Not enforced: brackets nested inside
+      // brackets, and the rule that an unquoted file name is followed only by
+      // whitespace, ) ] } ; or , (so <<a+b parses without an error).
+      _file_operand: ($) => choice($.string, $.file_name),
+
+      file_name: ($) => /([a-zA-Z0-9`\/.\\!\-_:$*~?]|\[[^\s\]]*\])+/,
 
       named_character: ($) => /\\\[[A-Z][a-zA-Z]*\]/,
 
@@ -477,7 +502,7 @@
           prec(PRECEDENCE_LONGNAME_CUBEROOT, seq("\\[CubeRoot]", $._expression)),
           prec(PRECEDENCE_LONGNAME_DEL, seq("\\[Del]", $._expression)),
           prec(PRECEDENCE_LONGNAME_SQUARE, seq("\\[Square]", $._expression)),
-          prec(PRECEDENCE_LESSLESS, seq("<<", $._expression)),
+          prec(PRECEDENCE_LESSLESS, seq("<<", $._file_operand)),
         ),
 
       // NOTE: entries here with precedence > implicit Times (108) are mirrored in
@@ -604,8 +629,8 @@
           prec.right(PRECEDENCE_LONGNAME_ROUNDIMPLIES, seq($._expression, "\\[RoundImplies]", $._expression)),
           prec.right(PRECEDENCE_LONGNAME_DIRECTEDEDGE, seq($._expression, "\\[DirectedEdge]", $._expression)),
           prec.right(PRECEDENCE_LONGNAME_UNDIRECTEDEDGE, seq($._expression, "\\[UndirectedEdge]", $._expression)),
-          prec.left(PRECEDENCE_GREATERGREATER, seq($._expression, ">>", $._expression)),
-          prec.left(PRECEDENCE_GREATERGREATERGREATER, seq($._expression, ">>>", $._expression)),
+          prec.left(PRECEDENCE_GREATERGREATER, seq($._expression, ">>", $._file_operand)),
+          prec.left(PRECEDENCE_GREATERGREATERGREATER, seq($._expression, ">>>", $._file_operand)),
         ),
 
       // NOTE: entries here with precedence > implicit Times (108) are mirrored in

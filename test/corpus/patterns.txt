@@ -406,3 +406,49 @@ a_. + b_.
     (pattern
       name: (symbol)
       constraint: (blank_default))))
+
+================
+Blank with letter-like named character head
+================
+
+_\[Alpha]
+
+---
+
+(source_file
+  (blank))
+
+================
+Blank with dollar head
+================
+
+_$Foo
+
+---
+
+(source_file
+  (blank))
+
+================
+BlankSequence with context-qualified head
+================
+
+__Foo`Bar
+
+---
+
+(source_file
+  (blank_sequence))
+
+================
+Named pattern - BlankNullSequence with relative-context head
+================
+
+x___`Ctx`h
+
+---
+
+(source_file
+  (pattern
+    name: (symbol)
+    constraint: (blank_null_sequence)))
