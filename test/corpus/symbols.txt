@@ -170,3 +170,25 @@ Symbol - letter-like named characters in a list
     (infix
       (symbol)
       (symbol))))
+
+================
+Symbol - letter-like named characters outside the Greek alphabet
+================
+
+\[ScriptCapitalL]\[Degree]2
+
+---
+
+(source_file
+  (symbol))
+
+================
+Symbol - letter-like named character between letters
+================
+
+a\[Gamma]b
+
+---
+
+(source_file
+  (symbol))

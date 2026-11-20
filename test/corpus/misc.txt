@@ -266,6 +266,21 @@ a \[DirectedEdge] b
     (symbol)))
 
 ================
+Named character - operator character with no operator rule is an operand
+================
+
+a \[Element] b
+
+---
+
+(source_file
+  (implicit_times
+    (implicit_times
+      (symbol)
+      (named_character))
+    (symbol)))
+
+================
 Get operator
 ================
 

@@ -172,29 +172,18 @@
   (PRECEDENCE_SYMBOL = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_UNDER = 188), // prec: 94, assoc: Associativity`NonRight
   (PRECEDENCE_ASSERTFALSE = 190), // prec: 95, assoc: Associativity`NonRight
-  // Named characters Wolfram treats as letters: valid inside a symbol name.
-  // Verified with MatchQ[ToExpression["a"<>ch<>"b", InputForm, HoldComplete],
-  // HoldComplete[_Symbol]]. Operators like \[Rule] must NOT be listed here.
-  (LETTER_CHARACTER = choice(
-    "\\[CapitalDelta]",
-    "\\[CapitalSigma]",
-    "\\[Alpha]",
-    "\\[Beta]",
-    "\\[Pi]",
-    "\\[Sigma]",
-    "\\[Lambda]",
-    "\\[CurlyEpsilon]",
-    "\\[FilledSquare]",
-    "\\[FilledCircle]",
-    "\\[FilledDiamond]",
-    "\\[EmptySquare]",
-    "\\[EmptyCircle]",
-    "\\[Infinity]",
+  // Long names (\[Name]) valid anywhere in a symbol name: those whose category
+  // in CodeParser's LongNames.wl is LetterlikeCharacter.
+  // scripts/letterlike-long-names.wls writes data/letterlike-long-names.json
+  // from that file. Operator long names such as \[Rule] are in another
+  // category and must not be listed.
+  (LETTERLIKE_LONG_NAME = choice(
+    ...require("./data/letterlike-long-names.json").map((name) => `\\[${name}]`),
   )),
   // Base pattern for a symbol name segment (no context backticks)
   (SYMBOL_NAME = seq(
-    choice(/[$a-zA-Z]/, LETTER_CHARACTER),
-    repeat(choice(/[$a-zA-Z0-9]/, LETTER_CHARACTER)),
+    choice(/[$a-zA-Z]/, LETTERLIKE_LONG_NAME),
+    repeat(choice(/[$a-zA-Z0-9]/, LETTERLIKE_LONG_NAME)),
   )),
   // Precision (`) or accuracy (``) mark of a number, with an optional integer or real value
   (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
