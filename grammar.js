@@ -185,6 +185,9 @@
     choice(/[$a-zA-Z]/, LETTERLIKE_LONG_NAME),
     repeat(choice(/[$a-zA-Z0-9]/, LETTERLIKE_LONG_NAME)),
   )),
+  // A symbol: name segments joined by context marks, with an optional leading
+  // context mark for a relative context
+  (SYMBOL = seq(optional("`"), repeat(seq(SYMBOL_NAME, "`")), SYMBOL_NAME)),
   // Precision (`) or accuracy (``) mark of a number, with an optional integer or real value
   (NUMBER_MARK = /`{1,2}([0-9]+\.?[0-9]*)?/),
   // Scientific-notation exponent of a number
@@ -371,14 +374,7 @@
 
       _leaf: ($) => choice($.symbol, $.integer, $.real, $.string, $.slot, $.slot_sequence, $.blank, $.blank_default, $.blank_sequence, $.blank_null_sequence, $.named_character, $.out),
 
-      symbol: ($) =>
-        token(
-          seq(
-            optional("`"),
-            repeat(seq(SYMBOL_NAME, "`")),
-            SYMBOL_NAME,
-          ),
-        ),
+      symbol: ($) => token(SYMBOL),
 
       integer: ($) =>
         token(
@@ -406,7 +402,7 @@
       blank: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "_",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
 
       // _. — Optional with built-in default: Optional[Blank[]]
@@ -417,14 +413,14 @@
       blank_sequence: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "__",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
 
       // ___ with optional head: ___, ___Integer
       blank_null_sequence: ($) =>
         prec.left(PRECEDENCE_UNDER, seq(
           "___",
-          optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
+          optional(token.immediate(SYMBOL)),
         )),
 
       // Operand of <<, >> and >>>: a string, or a file name without quotes.
