@@ -377,7 +377,6 @@
             optional("`"),
             repeat(seq(SYMBOL_NAME, "`")),
             SYMBOL_NAME,
-            optional("`"),
           ),
         ),
 
@@ -427,6 +426,17 @@
           "___",
           optional(token.immediate(/[a-zA-Z][a-zA-Z0-9$]*/)),
         )),
+
+      // Operand of <<, >> and >>>: a string, or a file name without quotes.
+      // An unquoted file name holds letters, digits, the characters
+      // ` / . \ ! - _ : $ * ~ ?, and bracket pairs enclosing no whitespace
+      // (tutorial/OperatorInputForms, "File Names"). A bare context name
+      // such as Foo`Bar` is a file name. Not enforced: brackets nested inside
+      // brackets, and the rule that an unquoted file name is followed only by
+      // whitespace, ) ] } ; or , (so <<a+b parses without an error).
+      _file_operand: ($) => choice($.string, $.file_name),
+
+      file_name: ($) => /([a-zA-Z0-9`\/.\\!\-_:$*~?]|\[[^\s\]]*\])+/,
 
       named_character: ($) => /\\\[[A-Z][a-zA-Z]*\]/,
 
@@ -496,7 +506,7 @@
           prec(PRECEDENCE_LONGNAME_CUBEROOT, seq("\\[CubeRoot]", $._expression)),
           prec(PRECEDENCE_LONGNAME_DEL, seq("\\[Del]", $._expression)),
           prec(PRECEDENCE_LONGNAME_SQUARE, seq("\\[Square]", $._expression)),
-          prec(PRECEDENCE_LESSLESS, seq("<<", $._expression)),
+          prec(PRECEDENCE_LESSLESS, seq("<<", $._file_operand)),
         ),
 
       // NOTE: entries here with precedence > implicit Times (108) are mirrored in
@@ -623,8 +633,8 @@
           prec.right(PRECEDENCE_LONGNAME_ROUNDIMPLIES, seq($._expression, "\\[RoundImplies]", $._expression)),
           prec.right(PRECEDENCE_LONGNAME_DIRECTEDEDGE, seq($._expression, "\\[DirectedEdge]", $._expression)),
           prec.right(PRECEDENCE_LONGNAME_UNDIRECTEDEDGE, seq($._expression, "\\[UndirectedEdge]", $._expression)),
-          prec.left(PRECEDENCE_GREATERGREATER, seq($._expression, ">>", $._expression)),
-          prec.left(PRECEDENCE_GREATERGREATERGREATER, seq($._expression, ">>>", $._expression)),
+          prec.left(PRECEDENCE_GREATERGREATER, seq($._expression, ">>", $._file_operand)),
+          prec.left(PRECEDENCE_GREATERGREATERGREATER, seq($._expression, ">>>", $._file_operand)),
         ),
 
       // NOTE: entries here with precedence > implicit Times (108) are mirrored in

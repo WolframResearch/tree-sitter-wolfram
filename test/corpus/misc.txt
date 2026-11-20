@@ -317,3 +317,67 @@ x >>> "file.m"
   (binary
     (symbol)
     (string)))
+
+================
+Get operator - bare context name
+================
+
+<<Provisional`
+
+---
+
+(source_file
+  (prefix
+    (file_name)))
+
+================
+Get operator - unquoted path
+================
+
+<< ~/dir/file-1.m
+
+---
+
+(source_file
+  (prefix
+    (file_name)))
+
+================
+Put operator - unquoted file name
+================
+
+x >> out.txt
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (file_name)))
+
+================
+PutAppend operator - unquoted file name
+================
+
+x >>> out.txt
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (file_name)))
+
+================
+Get operator - unquoted file name ends at a semicolon
+================
+
+<<Foo`; x
+
+---
+
+(source_file
+  (infix
+    (prefix
+      (file_name))
+    (symbol)))

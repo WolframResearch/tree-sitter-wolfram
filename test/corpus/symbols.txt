@@ -78,29 +78,6 @@ my`contex`f[my`var`x]
     arguments: (symbol)))
 
 ================
-Symbol - bare context name as Get argument
-================
-
-<<Provisional`
-
----
-
-(source_file
-  (prefix
-    (symbol)))
-
-================
-Symbol - bare context name
-================
-
-Foo`Bar`
-
----
-
-(source_file
-  (symbol))
-
-================
 Symbol - letter-like named character at the start
 ================
 
@@ -192,3 +169,30 @@ a\[Gamma]b
 
 (source_file
   (symbol))
+
+================
+Symbol - trailing context mark is an error
+:error
+================
+
+Foo`Bar`
+
+---
+
+================
+Symbol - trailing context mark before an operator is an error
+:error
+================
+
+a`*b
+
+---
+
+================
+Symbol - trailing context mark before brackets is an error
+:error
+================
+
+Foo`[x]
+
+---

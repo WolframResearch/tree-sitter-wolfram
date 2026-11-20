@@ -24590,18 +24590,6 @@
                 }
               }
             ]
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "`"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
           }
         ]
       }
@@ -30747,6 +30735,23 @@
           }
         ]
       }
+    },
+    "_file_operand": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "file_name"
+        }
+      ]
+    },
+    "file_name": {
+      "type": "PATTERN",
+      "value": "([a-zA-Z0-9`\\/.\\\\!\\-_:$*~?]|\\[[^\\s\\]]*\\])+"
     },
     "named_character": {
       "type": "PATTERN",
@@ -43043,7 +43048,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_expression"
+                "name": "_file_operand"
               }
             ]
           }
@@ -44030,7 +44035,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_expression"
+                "name": "_file_operand"
               }
             ]
           }
@@ -44051,7 +44056,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_expression"
+                "name": "_file_operand"
               }
             ]
           }
