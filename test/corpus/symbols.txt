@@ -1,5 +1,5 @@
 ================
-Symbol - simple
+Letters only
 ================
 
 foo
@@ -10,7 +10,7 @@ foo
   (symbol))
 
 ================
-Symbol - with dollar sign
+Dollar sign and digits after the first letter
 ================
 
 foo$bar12
@@ -21,7 +21,7 @@ foo$bar12
   (symbol))
 
 ================
-Symbol - dollar prefix
+Leading dollar sign
 ================
 
 $foo
@@ -32,7 +32,7 @@ $foo
   (symbol))
 
 ================
-Symbol - context qualified
+Context-qualified name
 ================
 
 Global`x
@@ -43,7 +43,7 @@ Global`x
   (symbol))
 
 ================
-Symbol - nested context
+Nested contexts
 ================
 
 my`contex`f
@@ -54,7 +54,7 @@ my`contex`f
   (symbol))
 
 ================
-Symbol - relative context (leading backtick)
+Relative context (leading backtick)
 ================
 
 `localSymbol
@@ -65,7 +65,7 @@ Symbol - relative context (leading backtick)
   (symbol))
 
 ================
-Symbol - context qualified call
+Context-qualified call head and argument
 ================
 
 my`contex`f[my`var`x]
@@ -78,7 +78,7 @@ my`contex`f[my`var`x]
     arguments: (symbol)))
 
 ================
-Symbol - letter-like named character at the start
+Letter-like named character at the start
 ================
 
 \[CapitalDelta]G
@@ -89,7 +89,7 @@ Symbol - letter-like named character at the start
   (symbol))
 
 ================
-Symbol - letter-like named character after a letter
+Letter-like named character after a letter
 ================
 
 x\[Alpha]
@@ -100,7 +100,7 @@ x\[Alpha]
   (symbol))
 
 ================
-Symbol - letter-like named character after a context mark
+Letter-like named character after a context mark
 ================
 
 System`\[FilledSquare]
@@ -111,7 +111,7 @@ System`\[FilledSquare]
   (symbol))
 
 ================
-Symbol - letter-like named character in a call head
+Letter-like named character in a call head
 ================
 
 \[CapitalDelta]G[strand]
@@ -124,7 +124,7 @@ Symbol - letter-like named character in a call head
     arguments: (symbol)))
 
 ================
-Symbol - letter-like named character alone
+Letter-like named character alone
 ================
 
 \[Alpha]
@@ -135,7 +135,7 @@ Symbol - letter-like named character alone
   (symbol))
 
 ================
-Symbol - letter-like named characters in a list
+Letter-like named characters in a list
 ================
 
 {\[Alpha], \[Beta]}
@@ -149,7 +149,7 @@ Symbol - letter-like named characters in a list
       (symbol))))
 
 ================
-Symbol - letter-like named characters outside the Greek alphabet
+Letter-like named characters outside the Greek alphabet
 ================
 
 \[ScriptCapitalL]\[Degree]2
@@ -160,7 +160,7 @@ Symbol - letter-like named characters outside the Greek alphabet
   (symbol))
 
 ================
-Symbol - letter-like named character between letters
+Letter-like named character between letters
 ================
 
 a\[Gamma]b
@@ -171,7 +171,7 @@ a\[Gamma]b
   (symbol))
 
 ================
-Symbol - trailing context mark is an error
+Trailing context mark is an error
 :error
 ================
 
@@ -180,7 +180,7 @@ Foo`Bar`
 ---
 
 ================
-Symbol - trailing context mark before an operator is an error
+Trailing context mark before an operator is an error
 :error
 ================
 
@@ -189,7 +189,7 @@ a`*b
 ---
 
 ================
-Symbol - trailing context mark before brackets is an error
+Trailing context mark before brackets is an error
 :error
 ================
 
