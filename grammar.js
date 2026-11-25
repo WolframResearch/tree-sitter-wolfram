@@ -287,10 +287,10 @@
         choice(
           prec.left(PRECEDENCE_SLASH, seq($._mul_operand, "/", $._expression)),
           prec.right(PRECEDENCE_CARET, seq($._mul_operand, "^", $._expression)),
-          prec.left(PRECEDENCE_SLASHAT, seq($._mul_operand, "/@", $._expression)),
+          prec.right(PRECEDENCE_SLASHAT, seq($._mul_operand, "/@", $._expression)),
           prec.right(PRECEDENCE_ATAT, seq($._mul_operand, "@@", $._expression)),
-          prec.left(PRECEDENCE_SLASHSLASHAT, seq($._mul_operand, "//@", $._expression)),
-          prec.left(PRECEDENCE_ATATAT, seq($._mul_operand, "@@@", $._expression)),
+          prec.right(PRECEDENCE_SLASHSLASHAT, seq($._mul_operand, "//@", $._expression)),
+          prec.right(PRECEDENCE_ATATAT, seq($._mul_operand, "@@@", $._expression)),
           prec.right(PRECEDENCE_AT, seq($._mul_operand, "@", $._expression)),
           prec.left(PRECEDENCE_INFIX_QUESTION, seq($._mul_operand, "?", $._expression)),
         ),
@@ -528,20 +528,20 @@
       // `_mul_binary`; keep the two in sync.
       binary: ($) =>
         choice(
-          prec.left(PRECEDENCE_EQUAL, seq($._expression, "=", $._expression)),
-          prec.left(
+          prec.right(PRECEDENCE_EQUAL, seq($._expression, "=", $._expression)),
+          prec.right(
             PRECEDENCE_COLONEQUAL,
             seq($._expression, ":=", $._expression),
           ),
-          prec.left(
+          prec.right(
             PRECEDENCE_CARETEQUAL,
             seq($._expression, "^=", $._expression),
           ),
-          prec.left(
+          prec.right(
             PRECEDENCE_CARETCOLONEQUAL,
             seq($._expression, "^:=", $._expression),
           ),
-          prec.left(
+          prec.right(
             PRECEDENCE_BARMINUSGREATER,
             seq($._expression, "|->", $._expression),
           ),
@@ -599,16 +599,16 @@
           ),
           prec.left(PRECEDENCE_SLASH, seq($._expression, "/", $._expression)),
           prec.right(PRECEDENCE_CARET, seq($._expression, "^", $._expression)),
-          prec.left(
+          prec.right(
             PRECEDENCE_SLASHAT,
             seq($._expression, "/@", $._expression),
           ),
           prec.right(PRECEDENCE_ATAT, seq($._expression, "@@", $._expression)),
-          prec.left(
+          prec.right(
             PRECEDENCE_SLASHSLASHAT,
             seq($._expression, "//@", $._expression),
           ),
-          prec.left(
+          prec.right(
             PRECEDENCE_ATATAT,
             seq($._expression, "@@@", $._expression),
           ),

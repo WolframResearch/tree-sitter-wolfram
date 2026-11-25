@@ -1,0 +1,228 @@
+================
+Set is right-associative
+================
+
+a = b = c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+SetDelayed is right-associative
+================
+
+a := b := c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+UpSet is right-associative
+================
+
+a ^= b ^= c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+UpSetDelayed is right-associative
+================
+
+a ^:= b ^:= c
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Set inside SetDelayed (memoization)
+================
+
+f[x_] := f[x] = x^2
+
+---
+
+(source_file
+  (binary
+    (call
+      head: (symbol)
+      arguments: (pattern
+        name: (symbol)
+        constraint: (blank)))
+    (binary
+      (call
+        head: (symbol)
+        arguments: (symbol))
+      (binary
+        (symbol)
+        (integer)))))
+
+================
+SetDelayed wrapping a TagSetDelayed
+================
+
+installMakeBoxes[] := Simulation /: MakeBoxes[spec] := body
+
+---
+
+(source_file
+  (binary
+    (call
+      head: (symbol))
+    (binary
+      (binary
+        (symbol)
+        (call
+          head: (symbol)
+          arguments: (symbol)))
+      (symbol))))
+
+================
+Map is right-associative
+================
+
+f /@ g /@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+MapAll is right-associative
+================
+
+f //@ g //@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Apply at level 1 is right-associative
+================
+
+f @@@ g @@@ x
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Map with a call as right operand
+================
+
+f /@ g[x]
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (call
+      head: (symbol)
+      arguments: (symbol))))
+
+================
+Function arrow is right-associative
+================
+
+x |-> y |-> z
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (binary
+      (symbol)
+      (symbol))))
+
+================
+Map is right-associative inside implicit Times
+================
+
+2 f /@ g /@ x
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (binary
+        (symbol)
+        (symbol)))))
+
+================
+MapAll is right-associative inside implicit Times
+================
+
+2 f //@ g //@ x
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (binary
+        (symbol)
+        (symbol)))))
+
+================
+Apply at level 1 is right-associative inside implicit Times
+================
+
+2 f @@@ g @@@ x
+
+---
+
+(source_file
+  (implicit_times
+    (integer)
+    (binary
+      (symbol)
+      (binary
+        (symbol)
+        (symbol)))))

@@ -274,7 +274,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -316,7 +316,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -337,7 +337,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -78712,7 +78712,7 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 9,
           "content": {
             "type": "SEQ",
@@ -78733,7 +78733,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 9,
           "content": {
             "type": "SEQ",
@@ -78754,7 +78754,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 9,
           "content": {
             "type": "SEQ",
@@ -78775,7 +78775,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 9,
           "content": {
             "type": "SEQ",
@@ -78796,7 +78796,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 9,
           "content": {
             "type": "SEQ",
@@ -79132,7 +79132,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -79174,7 +79174,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -79195,7 +79195,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
