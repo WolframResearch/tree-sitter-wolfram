@@ -287,10 +287,10 @@
         choice(
           prec.left(PRECEDENCE_SLASH, seq($._mul_operand, "/", $._expression)),
           prec.right(PRECEDENCE_CARET, seq($._mul_operand, "^", $._expression)),
-          prec.left(PRECEDENCE_SLASHAT, seq($._mul_operand, "/@", $._expression)),
+          prec.right(PRECEDENCE_SLASHAT, seq($._mul_operand, "/@", $._expression)),
           prec.right(PRECEDENCE_ATAT, seq($._mul_operand, "@@", $._expression)),
-          prec.left(PRECEDENCE_SLASHSLASHAT, seq($._mul_operand, "//@", $._expression)),
-          prec.left(PRECEDENCE_ATATAT, seq($._mul_operand, "@@@", $._expression)),
+          prec.right(PRECEDENCE_SLASHSLASHAT, seq($._mul_operand, "//@", $._expression)),
+          prec.right(PRECEDENCE_ATATAT, seq($._mul_operand, "@@@", $._expression)),
           prec.right(PRECEDENCE_AT, seq($._mul_operand, "@", $._expression)),
           prec.left(PRECEDENCE_INFIX_QUESTION, seq($._mul_operand, "?", $._expression)),
         ),

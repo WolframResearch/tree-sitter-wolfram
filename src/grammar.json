@@ -274,7 +274,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -316,7 +316,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
@@ -337,7 +337,7 @@
           }
         },
         {
-          "type": "PREC_LEFT",
+          "type": "PREC_RIGHT",
           "value": 161,
           "content": {
             "type": "SEQ",
