@@ -275,56 +275,77 @@ x_^y_.
 
 ================
 Repeated - pattern in list
+:cst
 ================
 
 {x_, y_}..
 
 ---
 
-(source_file
-  (postfix
-    (group
-      (infix
-        (pattern
-          name: (symbol)
-          constraint: (blank))
-        (pattern
-          name: (symbol)
-          constraint: (blank))))))
+0:0  - 2:0    source_file
+1:0  - 1:10     postfix
+1:0  - 1:8        group
+1:0  - 1:1          "{"
+1:1  - 1:7          infix
+1:1  - 1:3            pattern
+1:1  - 1:2              name: symbol `x`
+1:2  - 1:3              constraint: blank
+1:2  - 1:3                "_"
+1:3  - 1:4            ","
+1:5  - 1:7            pattern
+1:5  - 1:6              name: symbol `y`
+1:6  - 1:7              constraint: blank
+1:6  - 1:7                "_"
+1:7  - 1:8          "}"
+1:8  - 1:10       ".."
 
 ================
 RepeatedNull - pattern in list
+:cst
 ================
 
 {x_, y_}...
 
 ---
 
-(source_file
-  (postfix
-    (group
-      (infix
-        (pattern
-          name: (symbol)
-          constraint: (blank))
-        (pattern
-          name: (symbol)
-          constraint: (blank))))))
+0:0  - 2:0    source_file
+1:0  - 1:11     postfix
+1:0  - 1:8        group
+1:0  - 1:1          "{"
+1:1  - 1:7          infix
+1:1  - 1:3            pattern
+1:1  - 1:2              name: symbol `x`
+1:2  - 1:3              constraint: blank
+1:2  - 1:3                "_"
+1:3  - 1:4            ","
+1:5  - 1:7            pattern
+1:5  - 1:6              name: symbol `y`
+1:6  - 1:7              constraint: blank
+1:6  - 1:7                "_"
+1:7  - 1:8          "}"
+1:8  - 1:11       "..."
 
 ================
 Repeated in list pattern
+:cst
 ================
 
 {_,_}..
 
 ---
 
-(source_file
-  (postfix
-    (group
-      (infix
-        (blank)
-        (blank)))))
+0:0 - 2:0   source_file
+1:0 - 1:7     postfix
+1:0 - 1:5       group
+1:0 - 1:1         "{"
+1:1 - 1:4         infix
+1:1 - 1:2           blank
+1:1 - 1:2             "_"
+1:2 - 1:3           ","
+1:3 - 1:4           blank
+1:3 - 1:4             "_"
+1:4 - 1:5         "}"
+1:5 - 1:7       ".."
 
 ================
 Optional with explicit default
