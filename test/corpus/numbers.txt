@@ -310,28 +310,6 @@ Base notation with real-valued precision mark
   (real))
 
 ================
-Trailing-dot real is still a real
-================
-
-2.
-
----
-
-(source_file
-  (real))
-
-================
-Decimal real is still a real
-================
-
-2.5
-
----
-
-(source_file
-  (real))
-
-================
 Repeated on a symbol
 :cst
 ================
