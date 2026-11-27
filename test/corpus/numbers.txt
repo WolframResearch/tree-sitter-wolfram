@@ -308,3 +308,204 @@ Base notation with real-valued precision mark
 
 (source_file
   (real))
+
+================
+Repeated on a symbol
+:cst
+================
+
+{a..}
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:5     group
+1:0 - 1:1       "{"
+1:1 - 1:4       postfix
+1:1 - 1:2         symbol `a`
+1:2 - 1:4         ".."
+1:4 - 1:5       "}"
+
+================
+Repeated on a spaced integer
+:cst
+================
+
+{2 ..}
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:6     group
+1:0 - 1:1       "{"
+1:1 - 1:5       postfix
+1:1 - 1:2         integer `2`
+1:3 - 1:5         ".."
+1:5 - 1:6       "}"
+
+================
+Repeated on an integer literal
+:cst
+================
+
+{2..}
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:5     group
+1:0 - 1:1       "{"
+1:1 - 1:4       postfix
+1:1 - 1:2         integer `2`
+1:2 - 1:4         ".."
+1:4 - 1:5       "}"
+
+================
+RepeatedNull on an integer literal
+:cst
+================
+
+{0...}
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:6     group
+1:0 - 1:1       "{"
+1:1 - 1:5       postfix
+1:1 - 1:2         integer `0`
+1:2 - 1:5         "..."
+1:5 - 1:6       "}"
+
+================
+Repeated integer times an integer
+:cst
+================
+
+1..2
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:4     implicit_times
+1:0 - 1:3       postfix
+1:0 - 1:1         integer `1`
+1:1 - 1:3         ".."
+1:3 - 1:4       integer `2`
+
+================
+RepeatedNull integer times an integer
+:cst
+================
+
+1...2
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:5     implicit_times
+1:0 - 1:4       postfix
+1:0 - 1:1         integer `1`
+1:1 - 1:4         "..."
+1:4 - 1:5       integer `2`
+
+================
+Repeated integer as a rule left-hand side
+:cst
+================
+
+{0..} -> 0
+
+---
+
+0:0  - 2:0    source_file
+1:0  - 1:10     binary
+1:0  - 1:5        group
+1:0  - 1:1          "{"
+1:1  - 1:4          postfix
+1:1  - 1:2            integer `0`
+1:2  - 1:4            ".."
+1:4  - 1:5          "}"
+1:6  - 1:8        "->"
+1:9  - 1:10       integer `0`
+
+================
+Repeated integer after a line break
+:cst
+================
+
+f[a,
+2..]
+
+---
+
+0:0 - 3:0   source_file
+1:0 - 2:4     call
+1:0 - 1:1       head: symbol `f`
+1:1 - 1:2       "["
+1:2 - 2:3       arguments: infix
+1:2 - 1:3         symbol `a`
+1:3 - 1:4         ","
+2:0 - 2:3         postfix
+2:0 - 2:1           integer `2`
+2:1 - 2:3           ".."
+2:3 - 2:4       "]"
+
+================
+Precision mark followed by Repeated
+:cst
+================
+
+{0.`..}
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:7     group
+1:0 - 1:1       "{"
+1:1 - 1:6       postfix
+1:1 - 1:4         real `0.\``
+1:4 - 1:6         ".."
+1:6 - 1:7       "}"
+
+================
+Precision mark digits followed by Repeated
+:cst
+================
+
+1`2..
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:5     postfix
+1:0 - 1:3       integer `1\`2`
+1:3 - 1:5       ".."
+
+================
+Accuracy mark digits on a real followed by RepeatedNull
+:cst
+================
+
+1.5``2...
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:9     postfix
+1:0 - 1:6       real `1.5\`\`2`
+1:6 - 1:9       "..."
+
+================
+Fractional precision mark followed by Repeated
+:cst
+================
+
+1`2.5..
+
+---
+
+0:0 - 2:0   source_file
+1:0 - 1:7     postfix
+1:0 - 1:5       integer `1\`2.5`
+1:5 - 1:7       ".."

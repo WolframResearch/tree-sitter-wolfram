@@ -80573,6 +80573,14 @@
     {
       "type": "SYMBOL",
       "name": "_statement_sep"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "integer"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "real"
     }
   ],
   "inline": [],

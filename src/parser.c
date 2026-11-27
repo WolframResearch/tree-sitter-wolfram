@@ -20,7 +20,7 @@
 #define SYMBOL_COUNT 164
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 130
-#define EXTERNAL_TOKEN_COUNT 2
+#define EXTERNAL_TOKEN_COUNT 4
 #define FIELD_COUNT 5
 #define MAX_ALIAS_SEQUENCE_LENGTH 5
 #define MAX_RESERVED_WORD_SET_SIZE 0
@@ -30427,34 +30427,34 @@ static const TSLexerMode ts_lex_modes[STATE_COUNT] = {
   [557] = {.lex_state = 5675, .external_lex_state = 2},
   [558] = {.lex_state = 5675, .external_lex_state = 2},
   [559] = {.lex_state = 5675, .external_lex_state = 1},
-  [560] = {.lex_state = 0, .external_lex_state = 1},
-  [561] = {.lex_state = 0, .external_lex_state = 1},
-  [562] = {.lex_state = 0, .external_lex_state = 1},
-  [563] = {.lex_state = 7, .external_lex_state = 2},
-  [564] = {.lex_state = 7, .external_lex_state = 2},
-  [565] = {.lex_state = 7, .external_lex_state = 2},
-  [566] = {.lex_state = 7, .external_lex_state = 2},
-  [567] = {.lex_state = 7, .external_lex_state = 2},
-  [568] = {.lex_state = 7, .external_lex_state = 2},
-  [569] = {.lex_state = 690, .external_lex_state = 2},
-  [570] = {.lex_state = 678, .external_lex_state = 2},
-  [571] = {.lex_state = 678, .external_lex_state = 2},
-  [572] = {.lex_state = 678, .external_lex_state = 2},
-  [573] = {.lex_state = 678, .external_lex_state = 2},
-  [574] = {.lex_state = 678, .external_lex_state = 2},
-  [575] = {.lex_state = 690, .external_lex_state = 2},
-  [576] = {.lex_state = 678, .external_lex_state = 2},
-  [577] = {.lex_state = 690, .external_lex_state = 2},
-  [578] = {.lex_state = 0, .external_lex_state = 2},
-  [579] = {.lex_state = 678, .external_lex_state = 2},
-  [580] = {.lex_state = 0, .external_lex_state = 2},
-  [581] = {.lex_state = 678, .external_lex_state = 2},
-  [582] = {.lex_state = 0, .external_lex_state = 2},
-  [583] = {.lex_state = 678, .external_lex_state = 2},
-  [584] = {.lex_state = 678, .external_lex_state = 2},
-  [585] = {.lex_state = 678, .external_lex_state = 2},
-  [586] = {.lex_state = 0, .external_lex_state = 2},
-  [587] = {.lex_state = 678, .external_lex_state = 2},
+  [560] = {.lex_state = 0, .external_lex_state = 3},
+  [561] = {.lex_state = 0, .external_lex_state = 3},
+  [562] = {.lex_state = 0, .external_lex_state = 3},
+  [563] = {.lex_state = 7, .external_lex_state = 4},
+  [564] = {.lex_state = 7, .external_lex_state = 4},
+  [565] = {.lex_state = 7, .external_lex_state = 4},
+  [566] = {.lex_state = 7, .external_lex_state = 4},
+  [567] = {.lex_state = 7, .external_lex_state = 4},
+  [568] = {.lex_state = 7, .external_lex_state = 4},
+  [569] = {.lex_state = 690, .external_lex_state = 4},
+  [570] = {.lex_state = 678, .external_lex_state = 4},
+  [571] = {.lex_state = 678, .external_lex_state = 4},
+  [572] = {.lex_state = 678, .external_lex_state = 4},
+  [573] = {.lex_state = 678, .external_lex_state = 4},
+  [574] = {.lex_state = 678, .external_lex_state = 4},
+  [575] = {.lex_state = 690, .external_lex_state = 4},
+  [576] = {.lex_state = 678, .external_lex_state = 4},
+  [577] = {.lex_state = 690, .external_lex_state = 4},
+  [578] = {.lex_state = 0, .external_lex_state = 4},
+  [579] = {.lex_state = 678, .external_lex_state = 4},
+  [580] = {.lex_state = 0, .external_lex_state = 4},
+  [581] = {.lex_state = 678, .external_lex_state = 4},
+  [582] = {.lex_state = 0, .external_lex_state = 4},
+  [583] = {.lex_state = 678, .external_lex_state = 4},
+  [584] = {.lex_state = 678, .external_lex_state = 4},
+  [585] = {.lex_state = 678, .external_lex_state = 4},
+  [586] = {.lex_state = 0, .external_lex_state = 4},
+  [587] = {.lex_state = 678, .external_lex_state = 4},
 };
 
 static const uint16_t ts_parse_table[LARGE_STATE_COUNT][SYMBOL_COUNT] = {
@@ -92004,19 +92004,34 @@ static const TSParseActionEntry ts_parse_actions[] = {
 enum ts_external_scanner_symbol_identifiers {
   ts_external_token_comment = 0,
   ts_external_token__statement_sep = 1,
+  ts_external_token_integer = 2,
+  ts_external_token_real = 3,
 };
 
 static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token_comment] = sym_comment,
   [ts_external_token__statement_sep] = sym__statement_sep,
+  [ts_external_token_integer] = sym_integer,
+  [ts_external_token_real] = sym_real,
 };
 
-static const bool ts_external_scanner_states[3][EXTERNAL_TOKEN_COUNT] = {
+static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
   [1] = {
     [ts_external_token_comment] = true,
     [ts_external_token__statement_sep] = true,
+    [ts_external_token_integer] = true,
+    [ts_external_token_real] = true,
   },
   [2] = {
+    [ts_external_token_comment] = true,
+    [ts_external_token_integer] = true,
+    [ts_external_token_real] = true,
+  },
+  [3] = {
+    [ts_external_token_comment] = true,
+    [ts_external_token__statement_sep] = true,
+  },
+  [4] = {
     [ts_external_token_comment] = true,
   },
 };
