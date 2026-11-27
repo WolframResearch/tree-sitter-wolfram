@@ -82,7 +82,8 @@ bool tree_sitter_wolfram_external_scanner_scan(void *payload, TSLexer *lexer, co
   }
 
   // Newline is not significant here (mid-expression, or inside brackets): treat
-  // all remaining whitespace as ordinary extras before checking for a comment.
+  // all remaining whitespace as ordinary extras before checking for a number or
+  // a comment.
   while (iswspace(lexer->lookahead)) {
     lexer->advance(lexer, true);
   }

@@ -387,18 +387,16 @@ RepeatedNull on an integer literal
 Repeated integer as a rule left-hand side
 ================
 
-Rule[{0..}, 0]
+{0..} -> 0
 
 ---
 
 (source_file
-  (call
-    head: (symbol)
-    arguments: (infix
-      (group
-        (postfix
-          (integer)))
-      (integer))))
+  (binary
+    (group
+      (postfix
+        (integer)))
+    (integer)))
 
 ================
 Repeated integer after a line break
