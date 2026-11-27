@@ -20,7 +20,7 @@
 #define SYMBOL_COUNT 164
 #define ALIAS_COUNT 0
 #define TOKEN_COUNT 130
-#define EXTERNAL_TOKEN_COUNT 3
+#define EXTERNAL_TOKEN_COUNT 4
 #define FIELD_COUNT 5
 #define MAX_ALIAS_SEQUENCE_LENGTH 5
 #define MAX_RESERVED_WORD_SET_SIZE 0
@@ -92005,12 +92005,14 @@ enum ts_external_scanner_symbol_identifiers {
   ts_external_token_comment = 0,
   ts_external_token__statement_sep = 1,
   ts_external_token_integer = 2,
+  ts_external_token_real = 3,
 };
 
 static const TSSymbol ts_external_scanner_symbol_map[EXTERNAL_TOKEN_COUNT] = {
   [ts_external_token_comment] = sym_comment,
   [ts_external_token__statement_sep] = sym__statement_sep,
   [ts_external_token_integer] = sym_integer,
+  [ts_external_token_real] = sym_real,
 };
 
 static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
@@ -92018,10 +92020,12 @@ static const bool ts_external_scanner_states[5][EXTERNAL_TOKEN_COUNT] = {
     [ts_external_token_comment] = true,
     [ts_external_token__statement_sep] = true,
     [ts_external_token_integer] = true,
+    [ts_external_token_real] = true,
   },
   [2] = {
     [ts_external_token_comment] = true,
     [ts_external_token_integer] = true,
+    [ts_external_token_real] = true,
   },
   [3] = {
     [ts_external_token_comment] = true,

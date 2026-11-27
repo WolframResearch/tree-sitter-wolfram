@@ -80577,6 +80577,10 @@
     {
       "type": "SYMBOL",
       "name": "integer"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "real"
     }
   ],
   "inline": [],

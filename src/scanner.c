@@ -5,7 +5,8 @@
 enum TokenType {
   COMMENT,
   STATEMENT_SEP,
-  INTEGER
+  INTEGER,
+  REAL
 };
 
 static bool scan_comment(TSLexer *lexer) {
@@ -88,21 +89,48 @@ bool tree_sitter_wolfram_external_scanner_scan(void *payload, TSLexer *lexer, co
     lexer->advance(lexer, true);
   }
 
-  // A digit run immediately followed by `..` is an integer with Repeated
-  // applied, not a trailing-dot real followed by a Dot. mark_end pins the token
-  // at the last digit while we read on to decide.
-  if (valid_symbols[INTEGER] && is_digit(lexer->lookahead)) {
+  // A number whose digits end immediately before `..` takes no trailing dot:
+  // the `..` is Repeated (or the start of `...`, RepeatedNull). The internal
+  // lexer cannot see past the dot, so without this it reads `2..` as the real
+  // `2.` followed by a Dot. A trailing dot can follow the leading digits
+  // (`2..`) or the digits of a precision or accuracy mark (`2`3..`, `2.5``3..`).
+  // Each candidate end is pinned with mark_end before reading on to the dots.
+  // Every other number returns false and goes to the internal lexer. The token
+  // type matches what the internal lexer would give the same characters.
+  if ((valid_symbols[INTEGER] || valid_symbols[REAL]) && is_digit(lexer->lookahead)) {
+    enum TokenType symbol = INTEGER;
+
     while (is_digit(lexer->lookahead)) {
       lexer->advance(lexer, false);
     }
-    lexer->mark_end(lexer);
+
+    if (lexer->lookahead == '.') {
+      lexer->mark_end(lexer);
+      lexer->advance(lexer, false);
+      if (lexer->lookahead == '.') {
+        lexer->result_symbol = INTEGER;
+        return valid_symbols[INTEGER];
+      }
+      symbol = REAL;
+      while (is_digit(lexer->lookahead)) {
+        lexer->advance(lexer, false);
+      }
+    }
+
+    if (lexer->lookahead != '`') return false;
+    lexer->advance(lexer, false);
+    if (lexer->lookahead == '`') lexer->advance(lexer, false);
+    while (is_digit(lexer->lookahead)) {
+      lexer->advance(lexer, false);
+    }
 
     if (lexer->lookahead != '.') return false;
+    lexer->mark_end(lexer);
     lexer->advance(lexer, false);
     if (lexer->lookahead != '.') return false;
 
-    lexer->result_symbol = INTEGER;
-    return true;
+    lexer->result_symbol = symbol;
+    return valid_symbols[symbol];
   }
 
   if (lexer->lookahead == '(') {
