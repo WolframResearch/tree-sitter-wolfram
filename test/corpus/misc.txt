@@ -178,31 +178,6 @@ Tilde infix - call form
         (integer)))))
 
 ================
-Named character - standalone
-================
-
-\[Alpha]
-
----
-
-(source_file
-  (named_character))
-
-================
-Named character - in list
-================
-
-{\[Alpha], \[Beta]}
-
----
-
-(source_file
-  (group
-    (infix
-      (named_character)
-      (named_character))))
-
-================
 Named character - Rule operator
 ================
 
@@ -291,6 +266,21 @@ a \[DirectedEdge] b
     (symbol)))
 
 ================
+Named character - operator character with no operator rule is an operand
+================
+
+a \[Element] b
+
+---
+
+(source_file
+  (implicit_times
+    (implicit_times
+      (symbol)
+      (named_character))
+    (symbol)))
+
+================
 Get operator
 ================
 
@@ -327,3 +317,67 @@ x >>> "file.m"
   (binary
     (symbol)
     (string)))
+
+================
+Get operator - bare context name
+================
+
+<<Provisional`
+
+---
+
+(source_file
+  (prefix
+    (file_name)))
+
+================
+Get operator - unquoted path
+================
+
+<< ~/dir/file-1.m
+
+---
+
+(source_file
+  (prefix
+    (file_name)))
+
+================
+Put operator - unquoted file name
+================
+
+x >> out.txt
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (file_name)))
+
+================
+PutAppend operator - unquoted file name
+================
+
+x >>> out.txt
+
+---
+
+(source_file
+  (binary
+    (symbol)
+    (file_name)))
+
+================
+Get operator - unquoted file name ends at a semicolon
+================
+
+<<Foo`; x
+
+---
+
+(source_file
+  (infix
+    (prefix
+      (file_name))
+    (symbol)))

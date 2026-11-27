@@ -1,0 +1,198 @@
+================
+Letters only
+================
+
+foo
+
+---
+
+(source_file
+  (symbol))
+
+================
+Dollar sign and digits after the first letter
+================
+
+foo$bar12
+
+---
+
+(source_file
+  (symbol))
+
+================
+Leading dollar sign
+================
+
+$foo
+
+---
+
+(source_file
+  (symbol))
+
+================
+Context-qualified name
+================
+
+Global`x
+
+---
+
+(source_file
+  (symbol))
+
+================
+Nested contexts
+================
+
+my`contex`f
+
+---
+
+(source_file
+  (symbol))
+
+================
+Relative context (leading backtick)
+================
+
+`localSymbol
+
+---
+
+(source_file
+  (symbol))
+
+================
+Context-qualified call head and argument
+================
+
+my`contex`f[my`var`x]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))
+
+================
+Letter-like named character at the start
+================
+
+\[CapitalDelta]G
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character after a letter
+================
+
+x\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character after a context mark
+================
+
+System`\[FilledSquare]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character in a call head
+================
+
+\[CapitalDelta]G[strand]
+
+---
+
+(source_file
+  (call
+    head: (symbol)
+    arguments: (symbol)))
+
+================
+Letter-like named character alone
+================
+
+\[Alpha]
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named characters in a list
+================
+
+{\[Alpha], \[Beta]}
+
+---
+
+(source_file
+  (group
+    (infix
+      (symbol)
+      (symbol))))
+
+================
+Letter-like named characters outside the Greek alphabet
+================
+
+\[ScriptCapitalL]\[Degree]2
+
+---
+
+(source_file
+  (symbol))
+
+================
+Letter-like named character between letters
+================
+
+a\[Gamma]b
+
+---
+
+(source_file
+  (symbol))
+
+================
+Trailing context mark is an error
+:error
+================
+
+Foo`Bar`
+
+---
+
+================
+Trailing context mark before an operator is an error
+:error
+================
+
+a`*b
+
+---
+
+================
+Trailing context mark before brackets is an error
+:error
+================
+
+Foo`[x]
+
+---
